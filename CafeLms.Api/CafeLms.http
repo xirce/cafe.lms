@@ -1,6 +1,0 @@
-@CafeLms_HostAddress = http://localhost:5270
-
-GET {{CafeLms_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
