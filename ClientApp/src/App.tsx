@@ -1,58 +1,99 @@
 import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 import './App.css';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import CssBaseline from '@mui/material/CssBaseline';
+import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import LinearProgress from "@mui/material/LinearProgress";
+import { FormLabel } from "@mui/material";
+import Header from './features/Header/Header';
+
+const drawerWidth = 300;
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
-  );
+    return (
+        <Box sx={{ display: 'flex' }}>
+            <CssBaseline />
+            <Header />
+            <Drawer
+                sx={{
+                    width: drawerWidth,
+                    flexShrink: 0,
+                    '& .MuiDrawer-paper': {
+                        width: drawerWidth,
+                        boxSizing: 'border-box',
+                    },
+                }}
+                variant="permanent"
+                anchor="left"
+            >
+                <Toolbar />
+                <Divider />
+                <Toolbar sx={{ padding: '16px' }}>
+                    <Typography variant="h5" noWrap component="div">
+                        Курс
+                        <br />
+                        <Typography>Прогресс<FormLabel component="legend"
+                                                       sx={{ float: 'right' }}>2/4</FormLabel></Typography>
+                        <LinearProgress variant="determinate" value={50} color={'success'} sx={{ width: 252 }} />
+                    </Typography>
+                </Toolbar>
+                <Divider />
+                <List>
+                    {['1. Раздел', '2. Раздел', '3. Раздел'].map((text, index) => (
+                        <ListItem key={text} disablePadding>
+                            <ListItemButton>
+                                <ListItemText primary={text} />
+                            </ListItemButton>
+                        </ListItem>
+                    ))}
+                </List>
+            </Drawer>
+            <Box
+                component="main"
+                sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
+            >
+                <Toolbar />
+                <Typography paragraph>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
+                    enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
+                    imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus.
+                    Convallis convallis tellus id interdum velit laoreet id donec ultrices.
+                    Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
+                    adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra
+                    nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum
+                    leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis
+                    feugiat vivamus at augue. At augue eget arcu dictum varius duis at
+                    consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
+                    sapien faucibus et molestie ac.
+                </Typography>
+                <Typography paragraph>
+                    Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
+                    eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
+                    neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
+                    tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
+                    sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
+                    tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
+                    gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
+                    et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
+                    tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
+                    eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
+                    posuere sollicitudin aliquam ultrices sagittis orci a.
+                </Typography>
+            </Box>
+        </Box>
+    );
 }
 
 export default App;
