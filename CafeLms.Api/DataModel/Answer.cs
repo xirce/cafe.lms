@@ -4,5 +4,5 @@ public class Answer
 {
     public Guid Id { get; set; }
     public string Content { get; set; }
-    public int Position { get; set; }
+    public int Order { get; set; }
 }

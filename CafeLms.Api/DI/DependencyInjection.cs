@@ -13,7 +13,9 @@ public static class DependencyInjection
             options => options.UseNpgsql(configuration.GetConnectionString("Default")));
     }
 
-    public static IServiceCollection AddIdentityServer(this IServiceCollection services, IdentityServerSettings settings)
+    public static IServiceCollection AddIdentityServer(
+        this IServiceCollection services,
+        IdentityServerSettings settings)
     {
         services.AddIdentity<CafeLmsUser, IdentityRole>()
             .AddEntityFrameworkStores<CadeLmsDbContext>()

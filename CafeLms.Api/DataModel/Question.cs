@@ -2,16 +2,22 @@
 
 public class Question
 {
+    public Guid Id { get; set; }
+    public Guid QuizId { get; set; }
     public string Content { get; set; }
-    public int Position { get; set; }
-    public QuestionType Type { get; set; } 
+    public int Order { get; set; }
+    public AnswerType AnswerType { get; set; }
     public Answer[]? Answers { get; set; }
+}
+
+public class QuestionInternalModel : Question
+{
     public string CorrectAnswer { get; set; }
 }
 
-public enum QuestionType
+public enum AnswerType
 {
     SingleCorrect,
-    SingleOrManyCorrect,
+    ManyCorrect,
     Text
 }

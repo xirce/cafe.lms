@@ -1,5 +1,4 @@
-﻿using CafeLms.Api.DataModel;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CafeLms.Api.Controllers;
@@ -16,64 +15,62 @@ public class CourseController : ControllerBase
         this.coursesManager = coursesManager;
     }
 
+    [HttpPost]
+    public async Task<CreateCourseResponse> SaveCourse(CreateCourseRequest request)
+    {
+        return await coursesManager.SaveCourse(request);
+    }
+
     [HttpGet]
     public async Task<GetCoursesResponse> GetCourses()
     {
         return await coursesManager.GetCourses();
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{courseId}")]
     public async Task<GetCourseResponse> GetCourse(Guid id)
     {
         return await coursesManager.GetCourse(id);
     }
 }
 
-public record GetCourseResponse(Course Course);
-
-public class Course : CourseInfo
+public record CreateCourseRequest
 {
-    public Chapter[] Chapters { get; set; }
+    public string Title { get; init; }
+    public string PositionId { get; set; }
 }
 
-public class Chapter
+public record GetCourseResponse : CourseInfo
 {
-    public string Title { get; set; }
-    public int Position { get; set; }
-    public Unit[] Units { get; set; } 
+    public Unit[] Units { get; set; }
 }
 
 public class Unit
 {
+    public Guid Id { get; set; }
     public string Title { get; set; }
-    public int Position { get; set; }
-    public UnitType Type { get; set; }
-    public UnitStatus Status { get; set; }
-}
-
-public enum UnitType
-{
-    Lecture,
-    Quiz
-}
-
-public enum UnitStatus
-{
-    NotCompleted,
-    Completed
+    public int Order { get; set; }
 }
 
 public interface ICoursesManager
 {
+    Task<CreateCourseResponse> SaveCourse(CreateCourseRequest request);
     Task<GetCoursesResponse> GetCourses();
     Task<GetCourseResponse> GetCourse(Guid id);
 }
 
+public record CreateCourseResponse
+{
+    public Guid Id { get; init; }
+    public string Title { get; init; }
+    public PositionInfo Position { get; init; }
+}
+
 public record GetCoursesResponse(CourseInfo[] Courses);
 
-public class CourseInfo
+public record CourseInfo
 {
-    public Guid Id { get; set; }
-    public string Title { get; set; }
-    public Position Position { get; set; }
+    public Guid Id { get; init; }
+    public string Title { get; init; }
+    public PositionInfo Position { get; init; }
 }
