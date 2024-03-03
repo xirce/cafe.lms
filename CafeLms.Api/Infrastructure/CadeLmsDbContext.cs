@@ -11,9 +11,13 @@ public class CadeLmsDbContext : IdentityDbContext<CafeLmsUser>
     public DbSet<Course> Courses { get; set; }
     public DbSet<UserCourse> UserCourses { get; set; }
     public DbSet<Unit> Units { get; set; }
-    public DbSet<Quiz> Quizzes { get; set; }
+    public DbSet<UserUnit> UserUnits { get; set; }
     public DbSet<QuestionInternalModel> Questions { get; set; }
     public DbSet<QuizAttempt> QuizAttempts { get; set; }
+
+    public CadeLmsDbContext()
+    {
+    }
 
     public CadeLmsDbContext(DbContextOptions<CadeLmsDbContext> options) : base(options)
     {
@@ -43,20 +47,53 @@ public class CadeLmsDbContext : IdentityDbContext<CafeLmsUser>
             .WithOne()
             .HasForeignKey(u => u.CourseId);
 
-        builder.Entity<Unit>()
-            .HasOne(u => u.Quiz)
-            .WithOne()
-            .HasForeignKey<Quiz>(c => c.UnitId);
+        builder.Entity<UserCourse>()
+            .HasKey(u => new { u.UserId, u.CourseId });
 
-        builder.Entity<Quiz>()
+        builder.Entity<UserCourse>()
+            .HasOne<CafeLmsUser>()
+            .WithMany()
+            .HasForeignKey(u => u.UserId);
+
+        builder.Entity<UserCourse>()
+            .HasOne<Course>()
+            .WithMany()
+            .HasForeignKey(u => u.CourseId);
+
+        builder.Entity<UserUnit>()
+            .HasKey(u => new { u.UserId, u.UnitId });
+
+        builder.Entity<UserUnit>()
+            .HasOne<CafeLmsUser>()
+            .WithMany()
+            .HasForeignKey(u => u.UserId);
+
+        builder.Entity<UserUnit>()
+            .HasOne<Unit>()
+            .WithMany()
+            .HasForeignKey(u => u.UnitId);
+
+        builder.Entity<Unit>()
             .HasMany(q => q.Questions)
             .WithOne()
             .HasForeignKey(q => q.QuizId);
 
         builder.Entity<QuestionInternalModel>()
-            .OwnsMany(q => q.Answers, c => c.ToJson());
+            .HasMany(q => q.Answers)
+            .WithOne()
+            .HasForeignKey(a => a.QuestionId);
 
         builder.Entity<QuizAttempt>()
             .OwnsMany(q => q.Answers, c => c.ToJson());
+
+        builder.Entity<QuizAttempt>()
+            .HasOne<CafeLmsUser>()
+            .WithMany()
+            .HasForeignKey(q => q.UserId);
+
+        builder.Entity<QuizAttempt>()
+            .HasOne<Unit>()
+            .WithMany()
+            .HasForeignKey(q => q.QuizId);
     }
 }

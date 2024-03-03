@@ -13,7 +13,7 @@ public static class DependencyInjection
             options => options.UseNpgsql(configuration.GetConnectionString("Default")));
     }
 
-    public static IServiceCollection AddIdentityServer(
+    public static IServiceCollection AddIdentityServerWithSettings(
         this IServiceCollection services,
         IdentityServerSettings settings)
     {

@@ -1,4 +1,6 @@
 using System.Text.Json.Serialization;
+using CafeLms.Api.Configuration;
+using CafeLms.Api.DI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,9 @@ builder.Services.AddCors()
 
 builder.Services.AddAuthorization()
     .AddAuthorization();
+
+builder.Services
+    .AddDb(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -2,9 +2,10 @@
 
 public class QuizAttempt
 {
-    public DateTime AttemptDateTime { get; set; }
+    public Guid Id { get; set; }
     public string UserId { get; set; }
     public Guid QuizId { get; set; }
+    public DateTime AttemptDateTime { get; set; }
     public AnswerAttempt[] Answers { get; set; }
     public bool IsCorrect { get; set; }
 }
