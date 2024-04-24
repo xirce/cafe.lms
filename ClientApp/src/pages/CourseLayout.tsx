@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 
 export function CourseLayout() {
     return <Box
-        sx={{ py: 3, px: 20 }}
+        sx={{ pt: 3, pb: 20, px: 32 }}
     >
         <Outlet/>
     </Box>

@@ -14,6 +14,10 @@ import { LayoutWithHeader } from "./pages/LayoutWithHeader";
 import { ContainerLayout } from "./pages/ContainerLayout";
 import { Quiz } from "./pages/Courses/Quiz";
 import { CourseLayout } from "./pages/CourseLayout";
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -46,15 +50,19 @@ const router = createBrowserRouter([
                 element: <CoursePage />,
                 children: [
                     {
-                        path: "",
+                        path: "unit/:unitId",
                         element: <CourseLayout />,
                         children: [
                             {
-                                path: "unit/:unitId",
+                                path: "",
                                 element: <Lecture />,
                             },
                             {
-                                path: "test/:unitId",
+                                path: "lecture",
+                                element: <Lecture />,
+                            },
+                            {
+                                path: "test",
                                 element: <Quiz />,
                             }
                         ]

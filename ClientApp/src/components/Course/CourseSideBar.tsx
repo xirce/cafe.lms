@@ -1,7 +1,7 @@
 import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { FormLabel, ListItemIcon } from "@mui/material";
+import { FormLabel } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 import List from "@mui/material/List";
 import { NavLink } from "react-router-dom";
@@ -29,7 +29,9 @@ const units = [
     {
         name: '4. Раздел'
     },
-]
+];
+
+const unitsDone = units.filter(u => u.done).length;
 
 export function CourseSideBar() {
     return <Drawer
@@ -52,9 +54,12 @@ export function CourseSideBar() {
             </Typography>
             <Typography>
                 Прогресс
-                <FormLabel component="legend" sx={{ float: 'right' }}>2/4</FormLabel>
+                <FormLabel component="legend" sx={{ float: 'right' }}>{unitsDone}/{units.length}</FormLabel>
             </Typography>
-            <LinearProgress variant="determinate" value={50} color={'success'} sx={{ width: '100%', height: 8 }} />
+            <LinearProgress
+                variant="determinate"
+                value={100 * unitsDone / units.length}
+                color={'success'} sx={{ width: '100%', height: 8 }} />
         </Box>
         <Divider />
         <List sx={(theme) => ({
@@ -63,12 +68,11 @@ export function CourseSideBar() {
             }
         })}>
             {units.map(({ name, done }, index) => (
-                <NavLink to={`unit/${index}`}>
+                <NavLink key={name} to={`unit/${index}`}>
                     <ListItem
-                        key={name}
-                        disablePadding>`
+                        disablePadding>
                         <ListItemButton>
-                            <ListItemText primary={name} primaryTypographyProps={{noWrap: true, title: name}} />
+                            <ListItemText primary={name} primaryTypographyProps={{ noWrap: true, title: name }} />
                             {done && <CheckCircle color='success' fontSize={'small'} />}
                         </ListItemButton>
                     </ListItem>
