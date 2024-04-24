@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { store } from './app/store';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
-import CoursesPage from "./pages/Courses/CoursesPage";
+import { CoursesPage } from "./pages/Courses/CoursesPage";
 import CoursePage from "./pages/Courses/CoursePage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ProfilePage } from "./pages/Profile/ProfilePage";
@@ -18,6 +18,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import { MyCoursesPage } from "./pages/Courses/MyCoursesPage";
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
                     {
                         path: "courses",
                         element: <CoursesPage />,
+                    },
+                    {
+                        path: "my-courses",
+                        element: <MyCoursesPage />,
                     },
                     {
                         path: "profile",

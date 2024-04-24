@@ -1,7 +1,11 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, ScrollRestoration } from "react-router-dom";
 import Header from "../components/Header/Header";
 import React from "react";
 
 export function LayoutWithHeader() {
-    return <><Header/><Outlet/></>;
+    return <>
+        <Header/>
+        <Outlet/>
+        <ScrollRestoration />
+    </>;
 }

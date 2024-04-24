@@ -1,6 +1,16 @@
-import { Card, CardActionArea, CardContent, CardMedia, Chip, FormLabel, Grid, Stack } from '@mui/material';
+import {
+    Box,
+    Card,
+    CardActionArea,
+    CardContent,
+    CardMedia,
+    Chip,
+    Stack
+} from '@mui/material';
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
+import React from "react";
+import LinearProgress from "@mui/material/LinearProgress";
 
 interface ICourseCardProps {
     id: string;
@@ -11,8 +21,8 @@ interface ICourseCardProps {
 
 export function CourseCard(props: ICourseCardProps) {
     return (
-        <Card sx={{ maxWidth: 345 }}>
-            <Link to={`courses/${props.id}`}>
+        <Card sx={{ width: 344 }}>
+            <Link to={`/courses/${props.id}`}>
                 <CardActionArea>
                     <CardMedia
                         component="img"
@@ -21,18 +31,28 @@ export function CourseCard(props: ICourseCardProps) {
                         alt="green iguana"
                     />
                     <CardContent>
-                        <Stack direction='row' justifyContent='space-between' alignItems='center' pb={1}>
-                            <Typography fontWeight={'bold'} variant="h6">
-                                Курс
+                        <Stack direction='row' justifyContent='space-between' alignItems='baseline' mb={1}>
+                            <Typography variant='h6' fontWeight={'bold'}>
+                                Самый лучший курс
                             </Typography>
-                            <Typography>
+                            <Typography noWrap overflow='initial'>
                                 {props.unitsCount} Темы
                             </Typography>
                         </Stack>
-                        <Chip label="Бариста" size='small' />
+                        <Stack direction='row' justifyContent='space-between' alignItems='end'>
+                            <Chip label="Бариста" size='small' />
+                            <Stack direction='column' justifyContent='start' alignItems='end'>
+                                <LinearProgress
+                                    variant="determinate"
+                                    value={50}
+                                    color={'success'}
+                                    sx={{width: '100%'}}
+                                />
+                                <Typography fontSize='small'>Завершен на 50%</Typography>
+                            </Stack>
+                        </Stack>
                     </CardContent>
                 </CardActionArea>
-
             </Link>
         </Card>
 

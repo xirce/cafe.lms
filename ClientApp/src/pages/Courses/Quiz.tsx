@@ -23,7 +23,7 @@ export function Quiz() {
 
     return <>
         <Typography variant="h3" mb={5}>{`Тест к лекции ${unitId}`}</Typography>
-        <Grid container gap={4}>
+        <Grid container gap={6}>
             <Question id={"1"} questionText={"1. Крушка?"} answers={answers} />
             <Question id={"2"} questionText={"2. Чашка?"} answerType={AnswerType.Radio} answers={answers} />
             <Question id={"3"} questionText={"3. Ложка?"} answers={answers} />

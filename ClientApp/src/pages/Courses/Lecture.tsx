@@ -2,17 +2,17 @@ import React from "react";
 import { Link, useParams } from "react-router-dom";
 import MuiMarkdown from "mui-markdown";
 import { Button, Grid } from "@mui/material";
-import Box from "@mui/material/Box";
+import { NavigateNext } from "@mui/icons-material";
 
 export function Lecture() {
     const { courseId, unitId } = useParams();
 
-    return <>
-        <Box mb={3}>
+    return <Grid container direction='column'>
+        <Grid item mb={3}>
             <MuiMarkdown>
                 {`##${unitId}\n` +
                     `<img src="https://sberbusiness.live/bcp-laika-public/72a33711-1d6f-42cb-b93d-1fd8d3a42ac1/original" width="560px" style="display: block; margin-left: auto; margin-right: auto; margin-bottom: 32px"/>\n` +
-                `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius fermentum tellus, at egestas tortor pretium at. Curabitur sodales elit vitae sodales tincidunt. Fusce consectetur nisi at neque vestibulum, ut tempus leo aliquam. Suspendisse potenti. Mauris ut hendrerit leo, blandit congue enim. Sed sodales auctor dapibus. Fusce ac mollis turpis, quis interdum augue. Vivamus fermentum nulla nec dui porttitor vestibulum. Donec gravida finibus rhoncus. Duis massa lectus, rhoncus ut ornare ac, laoreet in dui.
+                    `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius fermentum tellus, at egestas tortor pretium at. Curabitur sodales elit vitae sodales tincidunt. Fusce consectetur nisi at neque vestibulum, ut tempus leo aliquam. Suspendisse potenti. Mauris ut hendrerit leo, blandit congue enim. Sed sodales auctor dapibus. Fusce ac mollis turpis, quis interdum augue. Vivamus fermentum nulla nec dui porttitor vestibulum. Donec gravida finibus rhoncus. Duis massa lectus, rhoncus ut ornare ac, laoreet in dui.
 
 Integer ac nibh tristique, bibendum nisi ac, pretium nibh. Fusce eget tempor diam. Nullam vitae euismod mauris, sed pharetra massa. Praesent iaculis fermentum diam, et aliquam massa ornare eget. Maecenas vitae lorem eu nunc porttitor feugiat. Pellentesque suscipit fringilla felis eu vulputate. Interdum et malesuada fames ac ante ipsum primis in faucibus. Cras maximus quam et massa tristique imperdiet. Vestibulum vel fringilla ipsum, ac porta ex. Pellentesque finibus vitae ante consequat tempor.
 
@@ -22,11 +22,11 @@ Ut eget ornare nunc. Curabitur dapibus purus ut hendrerit rutrum. Proin quam neq
 
 Phasellus et nibh ipsum. Quisque ullamcorper molestie tristique. Donec sed enim a ante rutrum vulputate. Maecenas at pharetra magna. Vestibulum luctus justo et dui varius, sed elementum erat pulvinar. Aenean gravida, sapien viverra mollis aliquet, lorem arcu posuere libero, sit amet molestie turpis tellus sed nisl. Nullam in leo tristique, convallis erat sed, pretium magna. Pellentesque nisi diam, mattis sed purus quis, pretium bibendum ex. Proin tempus erat eu quam varius, in egestas lorem consectetur. Mauris imperdiet est ut nisi porttitor, ac dignissim lacus dignissim. Integer porttitor nisi ut libero ultrices, non dapibus odio tincidunt.`}
             </MuiMarkdown>
-        </Box>
-        <Grid container justifyContent="center">
+        </Grid>
+        <Grid item alignSelf='end'>
             <Link to={`test`}>
-                <Button variant='contained'>Перейти к тесту</Button>
+                <Button variant='contained' endIcon={<NavigateNext />}>Перейти к тесту</Button>
             </Link>
         </Grid>
-    </>;
+    </Grid>;
 }
