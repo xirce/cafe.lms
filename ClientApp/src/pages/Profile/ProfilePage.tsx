@@ -16,12 +16,21 @@ export function ProfilePage() {
             p={3}
             gap={3}
         >
-            <Grid item container justifyContent='space-between' borderBottom={1} borderColor={'divider'} pb={3}>
-                <Avatar
-                    sx={{ width: 160, height: 160 }}
-                    src="https://vkplay.ru/hotbox/content_files/Stories/2023/08/31/7ba7ab0830be4cf695cbd0d353c757f6.jpg"
-                />
-                {/* FIELDS */}
+            <Grid item container direction='row' justifyContent='space-between' borderBottom={1} borderColor={'divider'} pb={3}>
+                <Stack justifyContent='start' alignItems='center' gap={7}>
+                    <Avatar
+                        sx={{ width: 160, height: 160 }}
+                        src="https://vkplay.ru/hotbox/content_files/Stories/2023/08/31/7ba7ab0830be4cf695cbd0d353c757f6.jpg"
+                    />
+                    <TextField
+                        id="role"
+                        label="Роль"
+                        defaultValue="Стажёр"
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                    />
+                </Stack>
                 <FormControl sx={{ gap: 2 }}>
                     <TextField
                         id="lastName"
