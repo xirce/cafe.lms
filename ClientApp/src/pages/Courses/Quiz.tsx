@@ -4,6 +4,7 @@ import { AnswerType, IAnswer, Question } from "../../components/Quiz/Question";
 import { Button, Grid, Stack } from "@mui/material";
 import { NavigateBefore, NavigateNext } from "@mui/icons-material";
 import React from "react";
+import { FormProvider, useForm } from "react-hook-form";
 
 const answers: IAnswer[] = [
     {
@@ -22,25 +23,46 @@ const answers: IAnswer[] = [
 
 export function Quiz() {
     const { unitId } = useParams();
+    const form = useForm();
 
-    return <Stack direction='column' >
-        <Typography variant="h3" mb={5}>{`Тест к лекции ${unitId}`}</Typography>
-        <Grid container gap={6} mb={3}>
-            <Question id={"1"} questionText={"1. Крушка?"} answers={answers} />
-            <Question id={"2"} questionText={"2. Чашка?"} answerType={AnswerType.Radio} answers={answers} />
-            <Question id={"3"} questionText={"3. Ложка?"} answers={answers} />
-        </Grid>
-        <Stack direction='row' justifyContent='space-between'>
-            <Link to={`..`}>
-                <Button variant='contained' startIcon={<NavigateBefore />}>
-                    Вернуться к лекции
-                </Button>
-            </Link>
-            <Link to={`../../unit/${Number(unitId) + 1}`}>
-                <Button variant='contained' endIcon={<NavigateNext />}>
-                    Следующий раздел
-                </Button>
-            </Link>
-        </Stack>
-    </Stack>;
+    console.log(form.formState);
+
+    const onSubmit = (data: any) => {
+        console.log(data);
+    }
+
+    return <FormProvider {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+            <Stack direction='column'>
+                <Typography variant="h3" mb={5}>{`Тест к лекции ${unitId}`}</Typography>
+                <Grid container alignItems='start' gap={6} mb={4}>
+                    <Question id={"1"} questionText={"1. Крушка?"} answers={answers} />
+                    <Question id={"2"} questionText={"2. Чашка?"} answerType={AnswerType.Radio} answers={answers} />
+                    <Question id={"3"} questionText={"3. Ложка?"} answers={answers} />
+                </Grid>
+                <Grid container justifyContent='start' mb={12}>
+                    <Button
+                        size='large'
+                        variant="contained"
+                        type='submit'
+                        disabled={!form.formState.isDirty || !form.formState.isValid || form.formState.isSubmitSuccessful}
+                    >
+                        Сохранить
+                    </Button>
+                </Grid>
+                <Stack direction='row' justifyContent='space-between'>
+                    <Link to={`..`}>
+                        <Button variant='contained' startIcon={<NavigateBefore />}>
+                            Вернуться к лекции
+                        </Button>
+                    </Link>
+                    <Link to={`../../unit/${Number(unitId) + 1}`}>
+                        <Button variant='contained' endIcon={<NavigateNext />}>
+                            Следующий раздел
+                        </Button>
+                    </Link>
+                </Stack>
+            </Stack>
+        </form>
+    </FormProvider>;
 }

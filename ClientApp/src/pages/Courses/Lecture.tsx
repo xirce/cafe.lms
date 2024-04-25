@@ -8,7 +8,7 @@ export function Lecture() {
     const { courseId, unitId } = useParams();
 
     return <Grid container direction='column'>
-        <Grid item mb={3}>
+        <Grid item mb={6}>
             <MuiMarkdown>
                 {`##${unitId}\n` +
                     `<img src="https://sberbusiness.live/bcp-laika-public/72a33711-1d6f-42cb-b93d-1fd8d3a42ac1/original" width="560px" style="display: block; margin-left: auto; margin-right: auto; margin-bottom: 32px"/>\n` +
