@@ -67,5 +67,13 @@ public record CourseInfo
 {
     public Guid Id { get; init; }
     public string Title { get; init; }
+    public int UnitsCount { get; init; }
     public PositionInfo Position { get; init; }
+    public CourseProgress? Progress { get; init; }
+}
+
+public record CourseProgress
+{
+    public string UserId { get; init; }
+    public int UnitsDoneCount { get; init; }
 }
