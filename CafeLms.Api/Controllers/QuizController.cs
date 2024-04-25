@@ -61,12 +61,6 @@ public record SubmitQuizRequest
     public AnswerAttempt[] Answers { get; set; }
 }
 
-public class AnswerAttempt
-{
-    public Guid QuestionId { get; set; }
-    public string Answer { get; set; }
-}
-
 public class QuestionWithAnswer
 {
     public Guid Id { get; set; }
@@ -84,11 +78,6 @@ public record SubmitQuizResponse
     public Guid QuizId { get; set; }
 
     public AnswerAttemptWithResult[] Answers { get; set; }
-    public bool IsCorrect { get; set; }
-}
-
-public class AnswerAttemptWithResult : AnswerAttempt
-{
     public bool IsCorrect { get; set; }
 }
 

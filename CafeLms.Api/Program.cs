@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
     .AddDb(builder.Configuration)
-    .AddManagers()
+    .AddBusinessLogic()
     .AddIdentityServerWithSettings(
         builder.Configuration.GetRequiredSection(nameof(IdentityServerSettings)).Get<IdentityServerSettings>()!);
 

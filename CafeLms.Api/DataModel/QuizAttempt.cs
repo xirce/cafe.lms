@@ -6,13 +6,6 @@ public class QuizAttempt
     public string UserId { get; set; }
     public Guid QuizId { get; set; }
     public DateTime AttemptDateTime { get; set; }
-    public AnswerAttempt[] Answers { get; set; }
-    public bool IsCorrect { get; set; }
-}
-
-public class AnswerAttempt
-{
-    public Guid QuestionId { get; set; }
-    public string Answer { get; set; }
+    public AnswerAttemptWithResult[] Answers { get; set; }
     public bool IsCorrect { get; set; }
 }

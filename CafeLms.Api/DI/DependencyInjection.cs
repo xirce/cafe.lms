@@ -17,10 +17,11 @@ public static class DependencyInjection
             options => options.UseNpgsql(configuration.GetConnectionString("Default")));
     }
 
-    public static IServiceCollection AddManagers(this IServiceCollection services)
+    public static IServiceCollection AddBusinessLogic(this IServiceCollection services)
     {
         return services.AddScoped<IUsersManager, UsersManager>()
-            .AddScoped<IAuthorizationProvider, AuthorizationProvider>();
+            .AddScoped<IAuthorizationProvider, AuthorizationProvider>()
+            .AddScoped<IQuizManager, QuizManager>();
     }
 
     public static IServiceCollection AddIdentityServerWithSettings(
