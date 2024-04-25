@@ -4,6 +4,6 @@ namespace CafeLms.Api.Managers.Interfaces;
 
 public interface ILectureManager
 {
-    Task<CreateLectureResponse> SaveLecture(CreateLectureRequest request);
-    Task<GetLectureResponse> GetLecture(Guid quizId);
+    Task<SaveLectureResponse> SaveLecture(SaveLectureRequest request);
+    Task<GetLectureResponse> GetLecture(Guid unitId);
 }

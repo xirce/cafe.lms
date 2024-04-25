@@ -17,7 +17,7 @@ public class LectureController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<CreateLectureResponse> SaveLecture(CreateLectureRequest request)
+    public async Task<SaveLectureResponse> SaveLecture(SaveLectureRequest request)
     {
         return await lectureManager.SaveLecture(request);
     }
@@ -29,11 +29,12 @@ public class LectureController : ControllerBase
     }
 }
 
-public record CreateLectureResponse
+public record SaveLectureResponse
 {
     public Guid Id { get; init; }
-    public string Title { get; set; }
-    public string Content { get; set; }
+    public string Title { get; init; }
+    public string Content { get; init; }
+    public int Order { get; init; }
 }
 
 public record GetLectureResponse
@@ -41,10 +42,14 @@ public record GetLectureResponse
     public Guid Id { get; init; }
     public string Title { get; set; }
     public string Content { get; set; }
+    public int Order { get; set; }
 }
 
-public record CreateLectureRequest
+public record SaveLectureRequest
 {
-    public string Title { get; set; }
-    public string Content { get; set; }
+    public Guid? LectureId { get; init; }
+    public string Title { get; init; }
+    public string Content { get; init; }
+    public int Order { get; init; }
+    public Guid CourseId { get; init; }
 }

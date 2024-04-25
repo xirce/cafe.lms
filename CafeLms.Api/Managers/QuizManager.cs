@@ -50,7 +50,6 @@ public class QuizManager : IQuizManager
 
         var attempt = new QuizAttempt
         {
-            Id = Guid.NewGuid(),
             QuizId = unit.Id,
             UserId = request.UserId,
             AttemptDateTime = DateTime.UtcNow,
