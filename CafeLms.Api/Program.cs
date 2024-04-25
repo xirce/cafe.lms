@@ -1,18 +1,55 @@
 using System.Text.Json.Serialization;
+using CafeLms.Api.Authentication;
 using CafeLms.Api.Configuration;
 using CafeLms.Api.DI;
+using CafeLms.Api.Infrastructure;
+using IdentityModel;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services
+    .AddDb(builder.Configuration)
+    .AddManagers()
+    .AddIdentityServerWithSettings(
+        builder.Configuration.GetRequiredSection(nameof(IdentityServerSettings)).Get<IdentityServerSettings>()!);
+
+builder.Services.AddAuthentication(
+        options =>
+        {
+            options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        })
+    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
+        o =>
+        {
+            o.LoginPath = "/Authorize/Login";
+            o.Events.OnRedirectToLogin = Events.OnRedirectToLogin;
+            o.Events.OnRedirectToAccessDenied = Events.OnRedirectToAccessDenied;
+        })
+    .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme,
+        o =>
+        {
+            o.Authority = "http://localhost:5270";
+            o.ClientId = "Cafe.Lms.Api";
+            o.ClientSecret = "39127022-15a3-4d3f-b3b4-c6e6b00548d9";
+            o.ResponseType = OidcConstants.ResponseTypes.Code;
+            o.RequireHttpsMetadata = builder.Environment.IsProduction();
+            o.NonceCookie.SameSite = SameSiteMode.Lax;
+
+            o.Scope.Add("Cafe.Lms.Api");
+        });
+builder.Services.AddAuthorization();
+
 builder.Services.AddCors()
-    .AddControllers()
+    .AddControllersWithViews()
     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
-builder.Services.AddAuthorization()
-    .AddAuthorization();
-
-builder.Services
-    .AddDb(builder.Configuration);
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.MinimumSameSitePolicy = SameSiteMode.Lax;
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -25,15 +62,21 @@ if (app.Environment.IsDevelopment())
         .UseSwaggerUI();
 }
 
+app.EnsureDataSeeded();
+
+app.UseStaticFiles();
+app.UseCookiePolicy();
+
+app.UseRouting();
+app.UseIdentityServer();
 app.UseCors(
     builder => builder
         .WithOrigins("http://localhost:3000")
         .AllowAnyHeader()
         .AllowAnyMethod()
         .AllowCredentials());
-app.UseAuthentication()
-    .UseAuthorization();
+app.UseAuthorization();
 
-app.MapControllers();
+app.UseEndpoints(e => e.MapDefaultControllerRoute());
 
 app.Run();

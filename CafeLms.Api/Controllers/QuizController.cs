@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using CafeLms.Api.DataModel;
+using CafeLms.Api.Managers.Interfaces;
 using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -95,14 +96,6 @@ public record GetQuizResponse
 {
     public Guid QuizId { get; set; }
     public Question[] Questions { get; set; }
-}
-
-public interface IQuizManager
-{
-    Task<SaveQuizResponse> SaveQuiz(SaveQuizRequest request);
-    Task<GetQuizResponse> GetQuiz(Guid quizId);
-    Task<SubmitQuizResponse> SubmitQuiz(SubmitQuizRequest id);
-    Task<GetQuizAttemptResponse> GetQuizAttempt(GetQuizAttemptRequest request);
 }
 
 public record SaveQuizResponse

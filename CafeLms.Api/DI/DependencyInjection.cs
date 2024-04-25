@@ -1,5 +1,9 @@
 ﻿using CafeLms.Api.Configuration;
+using CafeLms.Api.DataModel;
 using CafeLms.Api.Infrastructure;
+using CafeLms.Api.Managers;
+using CafeLms.Api.Managers.Interfaces;
+using IdentityServer4.Validation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +17,12 @@ public static class DependencyInjection
             options => options.UseNpgsql(configuration.GetConnectionString("Default")));
     }
 
+    public static IServiceCollection AddManagers(this IServiceCollection services)
+    {
+        return services.AddScoped<IUsersManager, UsersManager>()
+            .AddScoped<IAuthorizationProvider, AuthorizationProvider>();
+    }
+
     public static IServiceCollection AddIdentityServerWithSettings(
         this IServiceCollection services,
         IdentityServerSettings settings)
@@ -21,13 +31,20 @@ public static class DependencyInjection
             .AddEntityFrameworkStores<CadeLmsDbContext>()
             .AddDefaultTokenProviders();
 
-        services.AddIdentityServer(options => { })
+        services.AddIdentityServer(options =>
+            {
+                options.Authentication.CheckSessionCookieSameSiteMode = SameSiteMode.Lax;
+            })
             .AddInMemoryIdentityResources(IdentityConfig.IdentityResources)
             .AddInMemoryApiScopes(IdentityConfig.ApiScopes)
             .AddInMemoryApiResources(IdentityConfig.ApiResources)
             .AddInMemoryClients(settings.Clients)
             .AddDeveloperSigningCredential()
             .AddAspNetIdentity<CafeLmsUser>();
+
+        services.ConfigureApplicationCookie(o => o.Cookie.SameSite = SameSiteMode.Lax);
+
+        services.AddTransient<ISecretValidator, PlainTextSharedSecretValidator>();
 
         return services;
     }

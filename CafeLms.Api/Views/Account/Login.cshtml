@@ -1,0 +1,15 @@
+@model CafeLms.Api.Models.Account.LoginViewModel;
+
+<form asp-controller="Account" asp-action="Login" method="post" class="form">
+    <legend class="title mui--text-display1">
+        Вход
+    </legend>
+    <input type="hidden" asp-for="ReturnUrl"/>
+    <div class="input-wrapper">
+        <input class="input mui--text-title" placeholder="Почта" asp-for="Email" autocomplete="off" autofocus required>
+    </div>
+    <div class="input-wrapper">
+        <input class="input mui--text-title" placeholder="Пароль" asp-for="Password" autocomplete="off" required/>
+    </div>
+    <button class="mui-btn mui-btn--primary mui--text-title" type="submit">Войти</button>
+</form>

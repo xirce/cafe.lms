@@ -21,7 +21,7 @@ interface ICourseCardProps {
 
 export function CourseCard(props: ICourseCardProps) {
     return (
-        <Card sx={{ width: 344 }}>
+        <Card sx={{ width: 312 }}>
             <Link to={`/courses/${props.id}`}>
                 <CardActionArea>
                     <CardMedia

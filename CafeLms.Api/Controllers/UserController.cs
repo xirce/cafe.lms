@@ -1,4 +1,5 @@
-﻿using IdentityServer4.Extensions;
+﻿using CafeLms.Api.Managers.Interfaces;
+using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CafeLms.Api.Controllers;
@@ -37,16 +38,6 @@ public class UserController : ControllerBase
 }
 
 public record GetUserPermissionsResponse(string[] Permissions);
-
-public interface IAuthorizationProvider
-{
-    Task<string[]> GetUserPermissions(string userId);
-}
-
-public interface IUsersManager
-{
-    Task<GetUserResponse> GetUser(string id);
-}
 
 public class GetUserResponse
 {

@@ -1,8 +1,8 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import MuiMarkdown from "mui-markdown";
-import { Button, Grid } from "@mui/material";
-import { NavigateNext } from "@mui/icons-material";
+import { Button, Grid, Stack } from "@mui/material";
+import { NavigateBefore, NavigateNext } from "@mui/icons-material";
 
 export function Lecture() {
     const { courseId, unitId } = useParams();
@@ -23,10 +23,15 @@ Ut eget ornare nunc. Curabitur dapibus purus ut hendrerit rutrum. Proin quam neq
 Phasellus et nibh ipsum. Quisque ullamcorper molestie tristique. Donec sed enim a ante rutrum vulputate. Maecenas at pharetra magna. Vestibulum luctus justo et dui varius, sed elementum erat pulvinar. Aenean gravida, sapien viverra mollis aliquet, lorem arcu posuere libero, sit amet molestie turpis tellus sed nisl. Nullam in leo tristique, convallis erat sed, pretium magna. Pellentesque nisi diam, mattis sed purus quis, pretium bibendum ex. Proin tempus erat eu quam varius, in egestas lorem consectetur. Mauris imperdiet est ut nisi porttitor, ac dignissim lacus dignissim. Integer porttitor nisi ut libero ultrices, non dapibus odio tincidunt.`}
             </MuiMarkdown>
         </Grid>
-        <Grid item alignSelf='end'>
+        <Stack direction='row' justifyContent='space-between'>
+            <Link to={`.././unit/${Number(unitId) - 1}`}>
+                <Button variant='contained' startIcon={<NavigateBefore />}>
+                    Предыдущий раздел
+                </Button>
+            </Link>
             <Link to={`test`}>
                 <Button variant='contained' endIcon={<NavigateNext />}>Перейти к тесту</Button>
             </Link>
-        </Grid>
+        </Stack>
     </Grid>;
 }

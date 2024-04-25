@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using CafeLms.Api.Managers.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CafeLms.Api.Controllers;
@@ -37,6 +38,7 @@ public class CourseController : ControllerBase
 public record CreateCourseRequest
 {
     public string Title { get; init; }
+    public string PreviewImageUrl { get; init; } 
     public string PositionId { get; set; }
 }
 
@@ -50,13 +52,6 @@ public class Unit
     public Guid Id { get; set; }
     public string Title { get; set; }
     public int Order { get; set; }
-}
-
-public interface ICoursesManager
-{
-    Task<CreateCourseResponse> SaveCourse(CreateCourseRequest request);
-    Task<GetCoursesResponse> GetCourses();
-    Task<GetCourseResponse> GetCourse(Guid id);
 }
 
 public record CreateCourseResponse

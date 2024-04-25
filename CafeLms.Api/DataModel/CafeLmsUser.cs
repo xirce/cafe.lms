@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
+namespace CafeLms.Api.DataModel;
+
 public class CafeLmsUser : IdentityUser
 {
     public string FirstName { get; set; }
