@@ -10,7 +10,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Drawer from "@mui/material/Drawer";
 import React from "react";
-import { CheckCircle } from "@mui/icons-material";
+import { CheckCircle, Circle } from "@mui/icons-material";
 
 const drawerWidth = 280;
 
@@ -64,7 +64,9 @@ export function CourseSideBar() {
         <Divider />
         <List sx={(theme) => ({
             '.active .MuiListItemButton-root': {
-                backgroundColor: theme.palette.action.selected
+                backgroundColor: theme.palette.action.selected,
+                borderRight: 2,
+                borderColor: theme.palette.action.active,
             }
         })}>
             {units.map(({ name, done }, index) => (
@@ -73,7 +75,9 @@ export function CourseSideBar() {
                         disablePadding>
                         <ListItemButton>
                             <ListItemText primary={name} primaryTypographyProps={{ noWrap: true, title: name }} />
-                            {done && <CheckCircle color='success' fontSize={'small'} />}
+                            {done
+                                ? <CheckCircle color='success' fontSize={'small'} />
+                                : <Circle color='disabled' fontSize={'small'} />}
                         </ListItemButton>
                     </ListItem>
                 </NavLink>
