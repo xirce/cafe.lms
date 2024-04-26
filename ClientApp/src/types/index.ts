@@ -1,8 +1,16 @@
 export interface IUserInfo {
-    lastName?: string;
-    firstName?: string;
-    middleName?: string;
-    position?: IPosition;
+    lastName: string;
+    firstName: string;
+    middleName: string;
+    email?: string;
+    position: IPosition;
+}
+
+export interface IChangeUserRequest {
+    firstName: string;
+    lastName: string;
+    middleName: string;
+    email?: string;
 }
 
 export interface ICoursesResponse {

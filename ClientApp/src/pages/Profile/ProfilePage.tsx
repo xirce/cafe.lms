@@ -1,10 +1,17 @@
 import React from "react";
-import { Avatar, Button, FormControl, Grid, Paper, Stack, TextField } from "@mui/material";
+import { Avatar, Button, Card, FormControl, Grid, Paper, Stack, TextField } from "@mui/material";
 import { CloudUpload } from "@mui/icons-material";
 import Typography from "@mui/material/Typography";
+import { useGetUserQuery } from "../../api/apiClient";
+import { PersonalDataForm } from "../../components/Profile/PersonalDataForm";
 
 export function ProfilePage() {
-    return <Paper variant='outlined' sx={{width: 520, mx: 'auto'}} >
+    const { data, isSuccess } = useGetUserQuery();
+
+    if (!isSuccess)
+        return <Typography>Ошибка</Typography>
+
+    return <Card elevation={4} sx={{ width: 520, mx: 'auto' }}>
         <Grid
             container
             direction="row"
@@ -16,7 +23,8 @@ export function ProfilePage() {
             p={3}
             gap={3}
         >
-            <Grid item container direction='row' justifyContent='space-between' borderBottom={1} borderColor={'divider'} pb={3}>
+            <Grid item container direction='row' justifyContent='space-between' borderBottom={1} borderColor={'divider'}
+                  pb={3}>
                 <Stack justifyContent='start' alignItems='center' gap={7}>
                     <Avatar
                         sx={{ width: 160, height: 160 }}
@@ -25,62 +33,23 @@ export function ProfilePage() {
                     <TextField
                         id="role"
                         label="Роль"
-                        defaultValue="Стажёр"
+                        defaultValue={data.position.title}
                         InputProps={{
                             readOnly: true,
                         }}
                     />
                 </Stack>
-                <FormControl sx={{ gap: 2 }}>
-                    <TextField
-                        id="lastName"
-                        name="lastName"
-                        label="Фамилия"
-                        defaultValue='Горохов'
-                    />
-                    <TextField
-                        id="firstName"
-                        name="firstName"
-                        label="Имя"
-                        defaultValue='Денис'
-                    />
-                    <TextField
-                        id="middleName"
-                        name="middleName"
-                        label="Отчество"
-                        defaultValue='Вячеславович'
-                    />
-                    <TextField
-                        type="email"
-                        id="email"
-                        name="email"
-                        label="Почта"
-                        defaultValue='yoviltri@gmail.com'
-                    />
-                    <Grid
-                        container
-                        justifyContent='center'
-                        item
-                    >
-                        <Button
-                            component="button"
-                            size="large"
-                            variant="contained"
-                        >
-                            Сохранить
-                        </Button>
-                    </Grid>
-                </FormControl>
+                <PersonalDataForm user={data}/>
             </Grid>
             <Grid item container alignItems='start' direction='column'>
                 <Typography fontSize='large' mb={1}>Документы</Typography>
                 <Stack direction='column' gap={2}>
-                     <TextField
+                    <TextField
                         name="health-book"
                         label='Санитарная книжка'
                         InputProps={{
                             readOnly: true,
-                            endAdornment: <><CloudUpload color='info'/>
+                            endAdornment: <><CloudUpload color='info' />
                                 <input
                                     type="file"
                                     accept="image/*"
@@ -99,5 +68,5 @@ export function ProfilePage() {
                 </Stack>
             </Grid>
         </Grid>
-    </Paper>;
+    </Card>;
 }

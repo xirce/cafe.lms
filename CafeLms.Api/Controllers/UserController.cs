@@ -23,6 +23,13 @@ public class UserController : ControllerBase
         return await usersManager.GetUser(User.GetSubjectId());
     }
 
+    [HttpPost]
+    public async Task ChangePersonalData(ChangeUserRequest request)
+    {
+        request = request with { UserId = User.GetSubjectId() };
+        await usersManager.ChangeUser(request);
+    }
+
     [HttpGet("permissions")]
     public async Task<GetUserPermissionsResponse> GetPermissions()
     {
@@ -45,6 +52,7 @@ public class GetUserResponse
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string MiddleName { get; set; }
+    public string? Email { get; set; }
     public PositionInfo Position { get; set; }
 }
 
