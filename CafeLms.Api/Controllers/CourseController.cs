@@ -31,9 +31,9 @@ public class CourseController : ControllerBase
     }
 
     [HttpGet("{courseId}")]
-    public async Task<GetCourseResponse> GetCourse(Guid id)
+    public async Task<GetCourseResponse> GetCourse(Guid courseId)
     {
-        return await coursesManager.GetCourse(id);
+        return await coursesManager.GetCourse(courseId);
     }
 }
 

@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { BaseQueryFn, createApi } from "@reduxjs/toolkit/query/react";
-import { IChangeUserRequest, ICoursesResponse, IUserInfo } from "../types";
+import { IChangeUserRequest, ICourseInfo, ICoursesResponse, IGetCourseRequest, ILecture, IUserInfo } from "../types";
 
 export const instance = axios.create({
     headers: {
@@ -50,6 +50,12 @@ const api = createApi({
         }),
         getCourses: build.query<ICoursesResponse, string | void>({
             query: (userId) => ({ url: `/courses?userId=${userId}`, method: 'GET' }),
+        }),
+        getCourse: build.query<ICourseInfo, IGetCourseRequest>({
+            query: ({ courseId, userId }) => ({ url: `/courses/${courseId}?userId=${userId}`, method: 'GET' }),
+        }),
+        getLecture: build.query<ILecture, string | void>({
+            query: (unitId) => ({ url: `/lectures/${unitId}`, method: 'GET' }),
         })
     })
 });
@@ -57,6 +63,8 @@ const api = createApi({
 export const {
     useGetUserQuery,
     useGetCoursesQuery,
+    useGetCourseQuery,
+    useGetLectureQuery,
     useChangeUserMutation
 } = api;
 

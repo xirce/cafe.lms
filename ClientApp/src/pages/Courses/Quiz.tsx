@@ -5,6 +5,8 @@ import { Button, Grid, Stack } from "@mui/material";
 import { NavigateBefore, NavigateNext } from "@mui/icons-material";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { useAppSelector } from "../../app/hooks";
+import { getCurrentUnit } from "../../app/course";
 
 const answers: IAnswer[] = [
     {
@@ -24,6 +26,7 @@ const answers: IAnswer[] = [
 export function Quiz() {
     const { unitId } = useParams();
     const form = useForm();
+    const currentUnit = useAppSelector(getCurrentUnit);
 
     const onSubmit = (data: any) => {
         console.log(data);
@@ -32,7 +35,7 @@ export function Quiz() {
     return <FormProvider {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
             <Stack direction='column'>
-                <Typography variant="h3" mb={5}>{`Тест к лекции ${unitId}`}</Typography>
+                <Typography variant="h3" mb={5}>{`Тест к лекции "${currentUnit!.title}`}"</Typography>
                 <Grid container alignItems='start' gap={2} mb={4}>
                     <Question id={"1"} questionText={"1. Крушка?"} answers={answers} />
                     <Question id={"2"} questionText={"2. Чашка?"} answerType={AnswerType.Radio} answers={answers} />

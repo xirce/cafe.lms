@@ -11,6 +11,9 @@ import ListItemText from "@mui/material/ListItemText";
 import Drawer from "@mui/material/Drawer";
 import React from "react";
 import { CheckCircle, Circle } from "@mui/icons-material";
+import { ICourseInfo, UserUnitStatus } from "../../types";
+import { Simulate } from "react-dom/test-utils";
+import progress = Simulate.progress;
 
 const drawerWidth = 280;
 
@@ -33,7 +36,11 @@ const units = [
 
 const unitsDone = units.filter(u => u.done).length;
 
-export function CourseSideBar() {
+interface ICourseSideBarProps {
+    course: ICourseInfo;
+}
+
+export function CourseSideBar({ course }: ICourseSideBarProps) {
     return <Drawer
         sx={{
             width: drawerWidth,
@@ -50,32 +57,34 @@ export function CourseSideBar() {
         <Divider />
         <Box padding={2}>
             <Typography variant="h5" noWrap mb={3} fontWeight='bold'>
-                Курс
+                {course.title}
             </Typography>
             <Typography>
                 Прогресс
-                <FormLabel component="legend" sx={{ float: 'right' }}>{unitsDone}/{units.length}</FormLabel>
+                <FormLabel component="legend" sx={{ float: 'right' }}>
+                    {course.progress?.unitsDoneCount}/{course.unitsCount}
+                </FormLabel>
             </Typography>
             <LinearProgress
                 variant="determinate"
-                value={100 * unitsDone / units.length}
+                value={100 * (course.progress?.unitsDoneCount || 0) / course.unitsCount}
                 color={'success'} sx={{ width: '100%', height: 8 }} />
         </Box>
         <Divider />
         <List>
-            {units.map(({ name, done }, index) => (
-                <NavLink key={name} to={`unit/${index}`}>
+            {course.units.map(({ id, title, progress }) => (
+                <NavLink key={id} to={`unit/${id}`}>
                     <ListItem
                         disablePadding>
                         <ListItemButton sx={(theme) => ({
                             '.active &': {
                                 backgroundColor: theme.palette.action.selected,
                                 borderRight: 2,
-                                borderColor: done ? theme.palette.success.main : theme.palette.action.active,
+                                borderColor: progress?.status === UserUnitStatus.Done ? theme.palette.success.main : theme.palette.action.active,
                             }
                         })}>
-                            <ListItemText primary={name} primaryTypographyProps={{ noWrap: true, title: name }} />
-                            {done
+                            <ListItemText primary={title} primaryTypographyProps={{ noWrap: true, title: title }} />
+                            {progress?.status === UserUnitStatus.Done
                                 ? <CheckCircle color='success' fontSize={'small'} />
                                 : <Circle color='disabled' fontSize={'small'} />}
                         </ListItemButton>

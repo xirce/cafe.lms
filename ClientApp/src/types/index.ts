@@ -26,6 +26,37 @@ export interface ICourseShortInfo {
     progress?: ICourseProgress;
 }
 
+export interface IGetCourseRequest {
+    courseId: string;
+    userId?: string;
+}
+
+export interface ICourseInfo extends ICourseShortInfo {
+    units: IUnit[];
+}
+
+export interface IUnit {
+    id: string;
+    title: string;
+    order: number;
+    progress: IUserUnitProgress;
+}
+
+export interface IUserUnitProgress {
+    status: UserUnitStatus;
+}
+
+export enum UserUnitStatus {
+    InProgress,
+    Done
+}
+
+export interface ILecture {
+    id: string;
+    title: string;
+    content: string;
+}
+
 export interface IPosition {
     id: string;
     title: string;
