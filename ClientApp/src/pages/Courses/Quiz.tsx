@@ -6,7 +6,7 @@ import { NavigateBefore, NavigateNext } from "@mui/icons-material";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useAppSelector } from "../../app/hooks";
-import { getCurrentUnit } from "../../app/course";
+import { getCourse, getCurrentUnit } from "../../app/course";
 
 const answers: IAnswer[] = [
     {
@@ -26,7 +26,8 @@ const answers: IAnswer[] = [
 export function Quiz() {
     const { unitId } = useParams();
     const form = useForm();
-    const currentUnit = useAppSelector(getCurrentUnit);
+    const currentUnit = (useAppSelector(getCurrentUnit))!;
+    const course = (useAppSelector(getCourse))!;
 
     const onSubmit = (data: any) => {
         console.log(data);
@@ -57,11 +58,14 @@ export function Quiz() {
                             Вернуться к лекции
                         </Button>
                     </Link>
-                    <Link to={`../../unit/${Number(unitId) + 1}`}>
-                        <Button variant='contained' endIcon={<NavigateNext />}>
-                            Следующий раздел
-                        </Button>
-                    </Link>
+                    {
+                        currentUnit.order + 1 < course.unitsCount &&
+                        <Link to={`../../unit/${Number(unitId) + 1}`}>
+                            <Button variant='contained' endIcon={<NavigateNext />}>
+                                Следующая тема
+                            </Button>
+                        </Link>
+                    }
                 </Stack>
             </Stack>
         </form>

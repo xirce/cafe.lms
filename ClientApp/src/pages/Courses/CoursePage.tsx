@@ -30,7 +30,7 @@ const CoursePage = () => {
 
     if (course && !unitId) {
         const defaultUnitId = course.units.find(u => !u.progress || u.progress.status === UserUnitStatus.InProgress)?.id || course.units.at(-1)!.id;
-        navigate(`unit/${defaultUnitId}`);
+        navigate(`unit/${defaultUnitId}`, { replace: true });
     }
 
     return <Box sx={{ display: 'flex' }}>

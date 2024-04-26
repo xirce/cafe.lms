@@ -31,7 +31,7 @@ export function CourseCard({ course }: ICourseCardProps) {
                     <CardContent>
                         <Stack direction='row' justifyContent='space-between' alignItems='baseline' mb={1}>
                             <Typography variant='h6' fontWeight={'bold'}>
-                                Самый лучший курс
+                                {course.title}
                             </Typography>
                             <Typography noWrap overflow='initial'>
                                 {course.unitsCount} {getCountDeclination(course.unitsCount, ['тема', 'темы', 'тем'])}

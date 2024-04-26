@@ -40,11 +40,15 @@ export function Question(props: IQuestionProps) {
 
     const isAnswerChecked = useCallback((a: IAnswer, field: ControllerRenderProps) => field.value === a.id || field.value?.includes(a.id), []);
 
-    const getAnswerControl = useCallback((a: IAnswer, renderProps: { field: ControllerRenderProps, formState: FormState<FieldValues> }) => {
+    const getAnswerControl = useCallback((a: IAnswer, renderProps: {
+        field: ControllerRenderProps,
+        formState: FormState<FieldValues>
+    }) => {
         return props.answerType === AnswerType.Radio
             ? <FormControlLabel
                 label={a.text}
                 value={a.id}
+                sx={{ width: '100%' }}
                 control={<Radio
                     color={(isAnswerChecked(a, renderProps.field) && isCorrectAnswer !== undefined)
                         && (isCorrectAnswer ? 'success' : 'error')
@@ -54,7 +58,7 @@ export function Question(props: IQuestionProps) {
                 label={a.text}
                 name={props.id}
                 value={a.id}
-                disableTypography={true}
+                sx={{ width: '100%' }}
                 control={
                     <Checkbox
                         checked={isAnswerChecked(a, renderProps.field)}
@@ -70,7 +74,10 @@ export function Question(props: IQuestionProps) {
             />;
     }, [props, formState]);
 
-    const renderAnswers = useCallback((renderProps: {field: ControllerRenderProps, formState: FormState<FieldValues>}) => {
+    const renderAnswers = useCallback((renderProps: {
+        field: ControllerRenderProps,
+        formState: FormState<FieldValues>
+    }) => {
         return props.answers.map(a =>
             <Paper key={a.id} variant='outlined' sx={(theme) => {
                 let borderColor = !formState.isSubmitSuccessful && isAnswerChecked(a, renderProps.field) ? theme.palette.info.main : '';
@@ -79,10 +86,11 @@ export function Question(props: IQuestionProps) {
                     borderColor = isCorrectAnswer ? theme.palette.success.main : theme.palette.error.main;
 
                 return {
-                px: 3,
-                mb: 1,
-                borderColor: borderColor
-            }}}>
+                    px: 3,
+                    mb: 1,
+                    borderColor: borderColor
+                }
+            }}>
                 {getAnswerControl(a, renderProps)}
             </Paper>
         );
