@@ -25,8 +25,6 @@ export function Quiz() {
     const { unitId } = useParams();
     const form = useForm();
 
-    console.log(form.formState);
-
     const onSubmit = (data: any) => {
         console.log(data);
     }
@@ -35,7 +33,7 @@ export function Quiz() {
         <form onSubmit={form.handleSubmit(onSubmit)}>
             <Stack direction='column'>
                 <Typography variant="h3" mb={5}>{`Тест к лекции ${unitId}`}</Typography>
-                <Grid container alignItems='start' gap={6} mb={4}>
+                <Grid container alignItems='start' gap={2} mb={4}>
                     <Question id={"1"} questionText={"1. Крушка?"} answers={answers} />
                     <Question id={"2"} questionText={"2. Чашка?"} answerType={AnswerType.Radio} answers={answers} />
                     <Question id={"3"} questionText={"3. Ложка?"} answers={answers} />
