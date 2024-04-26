@@ -38,7 +38,7 @@ public class CadeLmsDbContext : IdentityDbContext<CafeLmsUser>
             .HasForeignKey(p => p.RoleId);
 
         builder.Entity<Course>()
-            .HasOne<Position>()
+            .HasOne(c => c.Position)
             .WithMany()
             .HasForeignKey(c => c.PositionId);
 
@@ -69,7 +69,7 @@ public class CadeLmsDbContext : IdentityDbContext<CafeLmsUser>
             .HasForeignKey(u => u.UserId);
 
         builder.Entity<UserUnit>()
-            .HasOne<Unit>()
+            .HasOne(u => u.Unit)
             .WithMany()
             .HasForeignKey(u => u.UnitId);
 

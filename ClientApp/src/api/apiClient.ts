@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
-import { BaseQueryFn, createApi } from "@reduxjs/toolkit/query";
+import { BaseQueryFn, createApi } from "@reduxjs/toolkit/query/react";
+import { ICoursesResponse, IUserInfo } from "../types";
 
 export const instance = axios.create({
     headers: {
@@ -38,7 +39,20 @@ const api = createApi({
     reducerPath: 'api',
     baseQuery: axiosBaseQuery({ baseUrl: 'http://localhost:5270/api' }),
     keepUnusedDataFor: 30,
-    endpoints: (build) => ({})
+    endpoints: (build) => ({
+        getUser: build.query<IUserInfo, string | void>({
+            query: (userId) => ({ url: `/users?userId=${userId}`, method: 'GET' }),
+            keepUnusedDataFor: 10
+        }),
+        getCourses: build.query<ICoursesResponse, string | void>({
+            query: (userId) => ({ url: `/courses?userId=${userId}`, method: 'GET' }),
+        })
+    })
 });
+
+export const {
+    useGetUserQuery,
+    useGetCoursesQuery
+} = api;
 
 export default api;

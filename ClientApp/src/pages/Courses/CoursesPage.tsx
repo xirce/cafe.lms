@@ -1,13 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { CoursesList } from "../../components/CoursesList";
 import Typography from "@mui/material/Typography";
-import { instance } from "../../api/apiClient";
+import { useGetCoursesQuery } from "../../api/apiClient";
 
 export function CoursesPage() {
-    useEffect(() => {instance.get("http://localhost:5270/api/courses").then(console.log).catch(console.error)}, []);
+    const { data, isSuccess } = useGetCoursesQuery();
+
+    if (!isSuccess)
+        return <Typography>Ошибка</Typography>
 
     return <>
         <Typography variant='h4' mb={3}>Все курсы</Typography>
-        <CoursesList/>
+        <CoursesList courses={data.courses} />
     </>
 }

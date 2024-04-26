@@ -62,18 +62,18 @@ export function CourseSideBar() {
                 color={'success'} sx={{ width: '100%', height: 8 }} />
         </Box>
         <Divider />
-        <List sx={(theme) => ({
-            '.active .MuiListItemButton-root': {
-                backgroundColor: theme.palette.action.selected,
-                borderRight: 2,
-                borderColor: theme.palette.action.active,
-            }
-        })}>
+        <List>
             {units.map(({ name, done }, index) => (
                 <NavLink key={name} to={`unit/${index}`}>
                     <ListItem
                         disablePadding>
-                        <ListItemButton>
+                        <ListItemButton sx={(theme) => ({
+                            '.active &': {
+                                backgroundColor: theme.palette.action.selected,
+                                borderRight: 2,
+                                borderColor: done ? theme.palette.success.main : theme.palette.action.active,
+                            }
+                        })}>
                             <ListItemText primary={name} primaryTypographyProps={{ noWrap: true, title: name }} />
                             {done
                                 ? <CheckCircle color='success' fontSize={'small'} />

@@ -1,5 +1,4 @@
 import {
-    Box,
     Card,
     CardActionArea,
     CardContent,
@@ -11,24 +10,23 @@ import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 import React from "react";
 import LinearProgress from "@mui/material/LinearProgress";
+import { ICourseShortInfo } from "../../types";
+import { getCountDeclination } from "../../utils/formatting";
 
 interface ICourseCardProps {
-    id: string;
-    title: string;
-    imageUrl?: string;
-    unitsCount: number;
+    course: ICourseShortInfo;
 }
 
-export function CourseCard(props: ICourseCardProps) {
+export function CourseCard({ course }: ICourseCardProps) {
     return (
         <Card sx={{ width: 312 }}>
-            <Link to={`/courses/${props.id}`}>
+            <Link to={`/courses/${course.id}`}>
                 <CardActionArea>
                     <CardMedia
                         component="img"
                         height="140"
-                        image={props.imageUrl ?? "https://sun1-97.userapi.com/impg/Iq1HF-6JT_U0ME9MKZFlbvbXa0daaCcQc5QNxQ/YI-jebv4Ka8.jpg?size=1200x800&quality=96&sign=2153a2c502ca19f02bc6b32aa83ff4b3&c_uniq_tag=j7bi6AQX7LiI7C50OKggAhZONb5EqGj4bcx9KqttVkE&type=album"}
-                        alt="green iguana"
+                        image={course.previewImageUrl}
+                        alt="preview"
                     />
                     <CardContent>
                         <Stack direction='row' justifyContent='space-between' alignItems='baseline' mb={1}>
@@ -36,11 +34,11 @@ export function CourseCard(props: ICourseCardProps) {
                                 Самый лучший курс
                             </Typography>
                             <Typography noWrap overflow='initial'>
-                                {props.unitsCount} Темы
+                                {course.unitsCount} {getCountDeclination(course.unitsCount, ['тема', 'темы', 'тем'])}
                             </Typography>
                         </Stack>
                         <Stack direction='row' justifyContent='space-between' alignItems='end'>
-                            <Chip label="Бариста" size='small' />
+                            <Chip label={course.position.title} size='small' />
                             <Stack direction='column' justifyContent='start' alignItems='end'>
                                 <LinearProgress
                                     variant="determinate"
@@ -48,7 +46,10 @@ export function CourseCard(props: ICourseCardProps) {
                                     color={'success'}
                                     sx={{width: '100%'}}
                                 />
-                                <Typography fontSize='small'>Завершен на 50%</Typography>
+                                {
+                                    course.progress
+                                    && <Typography fontSize='small'>Завершен на {course.progress?.unitsDoneCount / course.unitsCount}%</Typography>
+                                }
                             </Stack>
                         </Stack>
                     </CardContent>

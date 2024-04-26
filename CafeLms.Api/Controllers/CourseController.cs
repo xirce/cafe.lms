@@ -1,4 +1,6 @@
-﻿using CafeLms.Api.Managers.Interfaces;
+﻿using CafeLms.Api.DataModel;
+using CafeLms.Api.Managers.Interfaces;
+using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +19,7 @@ public class CourseController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<CreateCourseResponse> SaveCourse(CreateCourseRequest request)
+    public async Task<SaveCourseResponse> SaveCourse(SaveCourseRequest request)
     {
         return await coursesManager.SaveCourse(request);
     }
@@ -25,7 +27,7 @@ public class CourseController : ControllerBase
     [HttpGet]
     public async Task<GetCoursesResponse> GetCourses()
     {
-        return await coursesManager.GetCourses();
+        return await coursesManager.GetCourses(User.GetSubjectId());
     }
 
     [HttpGet("{courseId}")]
@@ -35,8 +37,9 @@ public class CourseController : ControllerBase
     }
 }
 
-public record CreateCourseRequest
+public record SaveCourseRequest
 {
+    public Guid? Id { get; init; }
     public string Title { get; init; }
     public string PreviewImageUrl { get; init; } 
     public string PositionId { get; set; }
@@ -52,12 +55,19 @@ public class Unit
     public Guid Id { get; set; }
     public string Title { get; set; }
     public int Order { get; set; }
+    public UserUnitProgress Progress { get; set; }
 }
 
-public record CreateCourseResponse
+public record UserUnitProgress
+{
+    public UserUnitStatus Status { get; set; }
+}
+
+public record SaveCourseResponse
 {
     public Guid Id { get; init; }
     public string Title { get; init; }
+    public string PreviewImageUrl { get; init; }
     public PositionInfo Position { get; init; }
 }
 
@@ -67,9 +77,10 @@ public record CourseInfo
 {
     public Guid Id { get; init; }
     public string Title { get; init; }
+    public string PreviewImageUrl { get; init; }
     public int UnitsCount { get; init; }
-    public PositionInfo Position { get; init; }
-    public CourseProgress? Progress { get; init; }
+    public PositionInfo Position { get; set; }
+    public CourseProgress? Progress { get; set; }
 }
 
 public record CourseProgress

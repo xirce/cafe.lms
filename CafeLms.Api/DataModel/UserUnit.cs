@@ -4,6 +4,7 @@ public class UserUnit
 {
     public string UserId { get; set; }
     public Guid UnitId { get; set; }
+    public Unit Unit { get; set; }
     public UserUnitStatus Status { get; set; }
 }
 
