@@ -57,6 +57,63 @@ export interface ILecture {
     content: string;
 }
 
+export interface IQuiz {
+    quizId: string;
+    title: string;
+    questions: IQuestion[];
+}
+
+export interface IQuestion {
+    id: string;
+    content: string;
+    order: number;
+    answerType: AnswerType;
+    answers: IAnswer[];
+}
+
+export interface IQuestionWithAnswer extends IQuestion {
+    answer: string;
+    isCorrectAnswer: string;
+}
+
+export interface IQuizAttempt {
+    quizId: string;
+    title: string;
+    questionsWithAnswers: IQuestionWithAnswer[];
+    isCorrect?: boolean;
+}
+
+export interface IAnswerAttempt {
+    questionId: string;
+    answer: string;
+}
+
+export interface IAnswerAttemptWithResult extends IAnswerAttempt {
+    isCorrect: boolean;
+}
+
+export interface ISubmitQuizRequest {
+    quizId: string;
+    answers: IAnswerAttempt[];
+}
+
+export interface ISubmitQuizResponse {
+    quizId: string;
+    answers: IAnswerAttemptWithResult[];
+    isCorrect: boolean;
+}
+
+export enum AnswerType {
+    Radio,
+    Checkbox
+}
+
+export interface IAnswer {
+    id: string;
+    content: string;
+    order: number;
+}
+
 export interface IPosition {
     id: string;
     title: string;

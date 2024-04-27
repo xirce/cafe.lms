@@ -27,7 +27,8 @@ public class QuizManager : IQuizManager
         return new GetQuizResponse
         {
             QuizId = unit.Id,
-            Questions = unit.Questions
+            Title = unit.Title,
+            Questions = unit.Questions.ToArray()
         };
     }
 
@@ -63,7 +64,7 @@ public class QuizManager : IQuizManager
         {
             QuizId = attempt.QuizId,
             UserId = attempt.UserId,
-            Answers = attempt.Answers,
+            Answers = attempt.Answers.ToArray(),
             IsCorrect = attempt.IsCorrect
         };
     }

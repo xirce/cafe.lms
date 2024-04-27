@@ -1,6 +1,17 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { BaseQueryFn, createApi } from "@reduxjs/toolkit/query/react";
-import { IChangeUserRequest, ICourseInfo, ICoursesResponse, IGetCourseRequest, ILecture, IUserInfo } from "../types";
+import {
+    IChangeUserRequest,
+    ICourseInfo,
+    ICoursesResponse,
+    IGetCourseRequest,
+    ILecture,
+    IQuiz,
+    IQuizAttempt,
+    ISubmitQuizRequest,
+    ISubmitQuizResponse,
+    IUserInfo
+} from "../types";
 
 export const instance = axios.create({
     headers: {
@@ -56,7 +67,16 @@ const api = createApi({
         }),
         getLecture: build.query<ILecture, string | void>({
             query: (unitId) => ({ url: `/lectures/${unitId}`, method: 'GET' }),
-        })
+        }),
+        getQuizAttempt: build.query<IQuizAttempt | null, string | void>({
+            query: (unitId) => ({ url: `/quiz/${unitId}/attempt`, method: 'GET' }),
+        }),
+        getQuiz: build.query<IQuiz, string | void>({
+            query: (unitId) => ({ url: `/quiz/${unitId}`, method: 'GET' }),
+        }),
+        submitQuiz: build.mutation<ISubmitQuizResponse, ISubmitQuizRequest>({
+            query: (request) => ({ url: `/quiz/${request.quizId}/submit`, method: 'POST', data: request }),
+        }),
     })
 });
 
@@ -65,6 +85,9 @@ export const {
     useGetCoursesQuery,
     useGetCourseQuery,
     useGetLectureQuery,
+    useGetQuizAttemptQuery,
+    useGetQuizQuery,
+    useSubmitQuizMutation,
     useChangeUserMutation
 } = api;
 

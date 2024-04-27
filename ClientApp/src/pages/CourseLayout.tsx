@@ -3,8 +3,10 @@ import Box from "@mui/material/Box";
 
 export function CourseLayout() {
     return <Box
-        sx={{ pt: 3, pb: 20, px: 32 }}
+        sx={{ pt: 8, pb: 20, px: 6, width: '100%' }}
     >
-        <Outlet/>
+        <Box mx='auto' maxWidth={1000}>
+            <Outlet/>
+        </Box>
     </Box>
 }

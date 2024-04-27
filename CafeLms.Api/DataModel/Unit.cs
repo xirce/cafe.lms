@@ -7,5 +7,5 @@ public class Unit
     public int Order { get; set; }
     public string Title { get; set; }
     public string Content { get; set; }
-    public QuestionInternalModel[] Questions { get; set; }
+    public ICollection<QuestionInternalModel> Questions { get; set; }
 }

@@ -78,10 +78,18 @@ public class CadeLmsDbContext : IdentityDbContext<CafeLmsUser>
             .WithOne()
             .HasForeignKey(q => q.QuizId);
 
+        builder.Entity<Unit>()
+            .Navigation(u => u.Questions)
+            .AutoInclude();
+
         builder.Entity<QuestionInternalModel>()
             .HasMany(q => q.Answers)
             .WithOne()
             .HasForeignKey(a => a.QuestionId);
+
+        builder.Entity<QuestionInternalModel>()
+            .Navigation(q => q.Answers)
+            .AutoInclude();
 
         builder.Entity<QuizAttempt>()
             .OwnsMany(q => q.Answers, c => c.ToJson());

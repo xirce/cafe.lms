@@ -1,33 +1,36 @@
 import { Link, useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import { AnswerType, IAnswer, Question } from "../../components/Quiz/Question";
 import { Button, Grid, Stack } from "@mui/material";
 import { NavigateBefore, NavigateNext } from "@mui/icons-material";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useAppSelector } from "../../app/hooks";
 import { getCourse, getCurrentUnit } from "../../app/course";
-
-const answers: IAnswer[] = [
-    {
-        id: 'answer1',
-        text: 'Ответ 1'
-    },
-    {
-        id: 'answer2',
-        text: 'Ответ 2 Ответ 2 Ответ 2 Ответ 2 Ответ 2 Ответ 2 Ответ 2 Ответ 2 Ответ 2 Ответ 2 Ответ 2 Ответ 2 Ответ 2 Ответ 2 Ответ 2 Ответ 2 '
-    },
-    {
-        id: 'answer3',
-        text: 'Ответ 3'
-    },
-]
+import { useGetQuizAttemptQuery, useGetQuizQuery } from "../../api/apiClient";
+import { IQuestionWithAnswer } from "../../types";
+import { Question } from "../../components/Quiz/Question";
 
 export function Quiz() {
     const { unitId } = useParams();
     const form = useForm();
     const currentUnit = (useAppSelector(getCurrentUnit))!;
     const course = (useAppSelector(getCourse))!;
+    let { data: quizAttempt, ...quizAttemptQuery } = useGetQuizAttemptQuery(unitId);
+    const skip = Boolean(quizAttemptQuery.isFetching || quizAttemptQuery.isSuccess && quizAttempt);
+    console.log(`Skip get quiz: ${skip}`);
+    const { data: quizInfo } = useGetQuizQuery(unitId, { skip: skip });
+
+    if (quizInfo) {
+        quizAttempt = {
+            quizId: quizInfo.quizId,
+            title: quizInfo.title,
+            questionsWithAnswers: quizInfo.questions?.map(q => q as IQuestionWithAnswer) ?? [],
+            isCorrect: undefined
+        }
+    }
+
+    if (!quizAttempt)
+        return null;
 
     const onSubmit = (data: any) => {
         console.log(data);
@@ -36,11 +39,11 @@ export function Quiz() {
     return <FormProvider {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
             <Stack direction='column'>
-                <Typography variant="h3" mb={5}>{`Тест к лекции "${currentUnit!.title}`}"</Typography>
+                <Typography variant="h3" mb={5}>{`Тест к лекции "${quizAttempt.title}`}"</Typography>
                 <Grid container alignItems='start' gap={2} mb={4}>
-                    <Question id={"1"} questionText={"1. Крушка?"} answers={answers} />
-                    <Question id={"2"} questionText={"2. Чашка?"} answerType={AnswerType.Radio} answers={answers} />
-                    <Question id={"3"} questionText={"3. Ложка?"} answers={answers} />
+                    {
+                        quizAttempt.questionsWithAnswers.map(q => <Question key={q.id} questionWithAnswer={q}/>)
+                    }
                 </Grid>
                 <Grid container justifyContent='start' mb={12}>
                     <Button

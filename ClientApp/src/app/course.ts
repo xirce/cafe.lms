@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ICourseInfo, IUnit } from "../types";
 import { RootState } from "./store";
+import api from "../api/apiClient";
 
 export interface ICourseState {
     course?: ICourseInfo;

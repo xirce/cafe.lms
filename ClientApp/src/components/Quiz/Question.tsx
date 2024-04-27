@@ -14,29 +14,17 @@ import React, { useCallback, useMemo } from "react";
 import { Controller, ControllerRenderProps, FieldValues, useFormContext } from "react-hook-form";
 import _ from "lodash";
 import { FormState } from "react-hook-form/dist/types/form";
-
-export enum AnswerType {
-    Radio,
-    Checkbox
-}
-
-export interface IAnswer {
-    id: string;
-    text: string;
-}
+import { AnswerType, IAnswer, IQuestionWithAnswer } from "../../types";
 
 interface IQuestionProps {
-    id: string;
-    questionText: string;
-    answerType?: AnswerType;
-    answers: IAnswer[]
+    questionWithAnswer: IQuestionWithAnswer;
 }
 
-export function Question(props: IQuestionProps) {
+export function Question({ questionWithAnswer }: IQuestionProps) {
     const { control, formState, reset } = useFormContext();
-    const isCorrectAnswer = useMemo(() => (formState.submitCount > 0 && formState.isSubmitSuccessful || undefined) && (Math.random() > 0.5), [formState.submitCount]);
+    const isCorrectAnswer = useMemo(() => questionWithAnswer.isCorrectAnswer, [questionWithAnswer.answer]);
     console.log(formState);
-    console.log(`Question: ${props.id}, isCorrectAnswer: ${isCorrectAnswer}`);
+    console.log(`Question: ${questionWithAnswer.id}, isCorrectAnswer: ${isCorrectAnswer}`);
 
     const isAnswerChecked = useCallback((a: IAnswer, field: ControllerRenderProps) => field.value === a.id || field.value?.includes(a.id), []);
 
@@ -44,9 +32,9 @@ export function Question(props: IQuestionProps) {
         field: ControllerRenderProps,
         formState: FormState<FieldValues>
     }) => {
-        return props.answerType === AnswerType.Radio
+        return questionWithAnswer.answerType === AnswerType.Radio
             ? <FormControlLabel
-                label={a.text}
+                label={a.content}
                 value={a.id}
                 sx={{ width: '100%' }}
                 control={<Radio
@@ -55,8 +43,8 @@ export function Question(props: IQuestionProps) {
                         || 'info'} />}
             />
             : <FormControlLabel
-                label={a.text}
-                name={props.id}
+                label={a.content}
+                name={questionWithAnswer.id}
                 value={a.id}
                 sx={{ width: '100%' }}
                 control={
@@ -72,13 +60,13 @@ export function Question(props: IQuestionProps) {
                     />
                 }
             />;
-    }, [props, formState]);
+    }, [questionWithAnswer, formState]);
 
     const renderAnswers = useCallback((renderProps: {
         field: ControllerRenderProps,
         formState: FormState<FieldValues>
     }) => {
-        return props.answers.map(a =>
+        return questionWithAnswer.answers.map(a =>
             <Paper key={a.id} variant='outlined' sx={(theme) => {
                 let borderColor = !formState.isSubmitSuccessful && isAnswerChecked(a, renderProps.field) ? theme.palette.info.main : '';
 
@@ -88,45 +76,48 @@ export function Question(props: IQuestionProps) {
                 return {
                     px: 3,
                     mb: 1,
-                    borderColor: borderColor
+                    borderColor: borderColor,
+                    width: '100%'
                 }
             }}>
                 {getAnswerControl(a, renderProps)}
             </Paper>
         );
-    }, [props, isCorrectAnswer]);
+    }, [questionWithAnswer, isCorrectAnswer]);
 
     return <Grid container direction="column" alignItems="flex-start" gap={1}>
         <Typography variant="h6">
-            {props.questionText}
+            {questionWithAnswer.order}. {questionWithAnswer.content}
         </Typography>
-        {props.answerType === AnswerType.Radio
-            ? <Controller
-                name={props.id}
-                control={control}
-                rules={{ required: true }}
-                defaultValue={null}
-                render={(renderProps) => {
-                    return <RadioGroup {...renderProps.field} onChange={(data) => {
-                        reset(undefined, { keepDirtyValues: true, keepSubmitCount: true });
-                        renderProps.field.onChange(data)
-                    }}>
-                        {renderAnswers(renderProps)}
-                    </RadioGroup>
-                }} />
-            :
-            <Controller
-                name={props.id}
-                control={control}
-                rules={{ required: true }}
-                defaultValue={[]}
-                render={(renderProps) => {
-                    return <FormGroup>
-                        {renderAnswers(renderProps)}
-                    </FormGroup>
-                }}
-            />
-        }
+        <Grid item alignSelf='stretch'>
+            {questionWithAnswer.answerType === AnswerType.Radio
+                ? <Controller
+                    name={questionWithAnswer.id}
+                    control={control}
+                    rules={{ required: true }}
+                    defaultValue={null}
+                    render={(renderProps) => {
+                        return <RadioGroup {...renderProps.field} onChange={(data) => {
+                            reset(undefined, { keepDirtyValues: true, keepSubmitCount: true });
+                            renderProps.field.onChange(data)
+                        }}>
+                            {renderAnswers(renderProps)}
+                        </RadioGroup>
+                    }} />
+                :
+                <Controller
+                    name={questionWithAnswer.id}
+                    control={control}
+                    rules={{ required: true }}
+                    defaultValue={[]}
+                    render={(renderProps) => {
+                        return <FormGroup>
+                            {renderAnswers(renderProps)}
+                        </FormGroup>
+                    }}
+                />
+            }
+        </Grid>
         <Stack direction='row' alignItems='center' gap={4} height={48}>
             {isCorrectAnswer !== undefined
                 && <Alert severity={isCorrectAnswer ? 'success' : 'error'}>

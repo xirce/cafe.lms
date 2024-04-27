@@ -2,7 +2,7 @@ import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { FormLabel } from "@mui/material";
-import LinearProgress from "@mui/material/LinearProgress";
+import LinearProgress, { linearProgressClasses } from "@mui/material/LinearProgress";
 import List from "@mui/material/List";
 import { NavLink } from "react-router-dom";
 import ListItem from "@mui/material/ListItem";
@@ -13,7 +13,6 @@ import React from "react";
 import { CheckCircle, Circle } from "@mui/icons-material";
 import { ICourseInfo, UserUnitStatus } from "../../types";
 import { Simulate } from "react-dom/test-utils";
-import progress = Simulate.progress;
 
 const drawerWidth = 280;
 
@@ -68,7 +67,15 @@ export function CourseSideBar({ course }: ICourseSideBarProps) {
             <LinearProgress
                 variant="determinate"
                 value={100 * (course.progress?.unitsDoneCount || 0) / course.unitsCount}
-                color={'success'} sx={{ width: '100%', height: 8 }} />
+                color={'success'}
+                sx={(theme) => ({
+                    width: '100%',
+                    height: 8,
+                    [`&.${linearProgressClasses.root}`]: {
+                        backgroundColor: theme.palette.action.disabledBackground,
+                    },
+                })}
+            />
         </Box>
         <Divider />
         <List>

@@ -57,17 +57,14 @@ public record SubmitQuizRequest
     [JsonIgnore]
     public string UserId { get; set; }
 
+    [JsonIgnore]
     public Guid QuizId { get; set; }
+
     public AnswerAttempt[] Answers { get; set; }
 }
 
-public class QuestionWithAnswer
+public class QuestionWithAnswer : Question
 {
-    public Guid Id { get; set; }
-    public string Content { get; set; }
-    public int Order { get; set; }
-    public AnswerType AnswerType { get; set; }
-    public Answer[]? Answers { get; set; }
     public string Answer { get; set; }
     public bool IsCorrectAnswer { get; set; }
 }
@@ -76,7 +73,6 @@ public record SubmitQuizResponse
 {
     public string UserId { get; set; }
     public Guid QuizId { get; set; }
-
     public AnswerAttemptWithResult[] Answers { get; set; }
     public bool IsCorrect { get; set; }
 }
@@ -84,6 +80,7 @@ public record SubmitQuizResponse
 public record GetQuizResponse
 {
     public Guid QuizId { get; set; }
+    public string Title { get; set; }
     public Question[] Questions { get; set; }
 }
 
@@ -96,7 +93,6 @@ public record SaveQuizResponse
 
 public record SaveQuizRequest
 {
-    public Guid CourseId { get; set; }
     public Guid QuizId { get; set; }
     public string Title { get; set; }
     public QuestionInternalModel[] Questions { get; set; }

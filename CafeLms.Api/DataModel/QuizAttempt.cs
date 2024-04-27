@@ -6,6 +6,6 @@ public class QuizAttempt
     public string UserId { get; set; }
     public Guid QuizId { get; set; }
     public DateTime AttemptDateTime { get; set; }
-    public AnswerAttemptWithResult[] Answers { get; set; }
+    public ICollection<AnswerAttemptWithResult> Answers { get; set; }
     public bool IsCorrect { get; set; }
 }

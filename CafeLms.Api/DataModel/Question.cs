@@ -7,7 +7,7 @@ public class Question
     public string Content { get; set; }
     public int Order { get; set; }
     public AnswerType AnswerType { get; set; }
-    public Answer[]? Answers { get; set; }
+    public ICollection<Answer> Answers { get; set; }
 }
 
 public class QuestionInternalModel : Question
