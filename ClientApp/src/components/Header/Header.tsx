@@ -4,9 +4,11 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import AppBar from "@mui/material/AppBar";
 import { Link } from "react-router-dom";
+import { useGetUserQuery } from "../../api/apiClient";
 
 const Header = () => {
     const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>();
+    const { data: user, isFetching } = useGetUserQuery();
 
     const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => setMenuAnchor(event.currentTarget);
     const handleCloseMenu = () => setMenuAnchor(null);
@@ -21,7 +23,7 @@ const Header = () => {
                     <Link to='/'>Cafe LMS</Link>
                 </Typography>
                 <IconButton disableRipple onClick={handleOpenMenu}>
-                    <Avatar alt={'Горохов Денис'} src={'/s'}>ГД</Avatar>
+                    <Avatar alt={user?.lastName + ' ' + user?.firstName} src={'/s'}>{user?.lastName[0]}{user?.firstName[0]}</Avatar>
                 </IconButton>
                 <Menu
                     sx={{ mt: '40px' }}
