@@ -55,7 +55,7 @@ public record QuestionOrder
 public record SubmitQuizRequest
 {
     [JsonIgnore]
-    public string UserId { get; set; }
+    public string? UserId { get; set; }
 
     [JsonIgnore]
     public Guid QuizId { get; set; }
@@ -65,8 +65,9 @@ public record SubmitQuizRequest
 
 public class QuestionWithAnswer : Question
 {
-    public string Answer { get; set; }
+    public Guid[] Answer { get; set; }
     public bool IsCorrectAnswer { get; set; }
+    public Guid[] IncorrectAnswerIds { get; set; }
 }
 
 public record SubmitQuizResponse

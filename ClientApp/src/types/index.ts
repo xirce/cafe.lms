@@ -47,8 +47,8 @@ export interface IUserUnitProgress {
 }
 
 export enum UserUnitStatus {
-    InProgress,
-    Done
+    InProgress = 'InProgress',
+    Done = 'Done'
 }
 
 export interface ILecture {
@@ -72,8 +72,9 @@ export interface IQuestion {
 }
 
 export interface IQuestionWithAnswer extends IQuestion {
-    answer: string;
-    isCorrectAnswer: string;
+    answer: string[];
+    isCorrectAnswer: boolean;
+    incorrectAnswerIds: string[]
 }
 
 export interface IQuizAttempt {
@@ -85,11 +86,12 @@ export interface IQuizAttempt {
 
 export interface IAnswerAttempt {
     questionId: string;
-    answer: string;
+    answer: string[];
 }
 
 export interface IAnswerAttemptWithResult extends IAnswerAttempt {
     isCorrect: boolean;
+    incorrectAnswerIds: string[];
 }
 
 export interface ISubmitQuizRequest {
@@ -104,8 +106,8 @@ export interface ISubmitQuizResponse {
 }
 
 export enum AnswerType {
-    Radio,
-    Checkbox
+    SingleCorrect = 'SingleCorrect',
+    ManyCorrect = 'ManyCorrect'
 }
 
 export interface IAnswer {

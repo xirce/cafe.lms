@@ -3,6 +3,8 @@ using CafeLms.Api.DataModel;
 using CafeLms.Api.Infrastructure;
 using CafeLms.Api.Managers.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using UserUnit = CafeLms.Api.DataModel.UserUnit;
+using UserCourse = CafeLms.Api.DataModel.UserCourse;
 
 namespace CafeLms.Api.Managers;
 
@@ -28,7 +30,7 @@ public class QuizManager : IQuizManager
         {
             QuizId = unit.Id,
             Title = unit.Title,
-            Questions = unit.Questions.ToArray()
+            Questions = unit.Questions.OrderBy(q => q.Order).ToArray()
         };
     }
 
@@ -45,7 +47,8 @@ public class QuizManager : IQuizManager
                 {
                     QuestionId = question.Id,
                     Answer = attempt.Answer,
-                    IsCorrect = attempt.Answer.Equals(question.CorrectAnswer)
+                    IsCorrect = attempt.Answer.ToHashSet().SetEquals(question.CorrectAnswer),
+                    IncorrectAnswerIds = attempt.Answer.Except(question.CorrectAnswer).ToArray()
                 })
             .ToArray();
 
@@ -58,6 +61,45 @@ public class QuizManager : IQuizManager
             IsCorrect = answerResults.All(a => a.IsCorrect)
         };
         await dbContext.QuizAttempts.AddAsync(attempt);
+
+        var userUnit = await dbContext.UserUnits.FindAsync(request.UserId, unit.Id);
+        if (userUnit is null)
+        {
+            userUnit = new UserUnit
+            {
+                UserId = request.UserId,
+                UnitId = unit.Id,
+                Status = attempt.IsCorrect ? UserUnitStatus.Done : UserUnitStatus.InProgress
+            };
+            await dbContext.UserUnits.AddAsync(userUnit);
+        }
+
+        if (attempt.IsCorrect)
+            userUnit.Status = UserUnitStatus.Done;
+
+        var course = await dbContext.Courses
+            .Include(c => c.Units)
+            .FirstAsync(c => c.Id == unit.CourseId);
+
+        var userCourse = await dbContext.UserCourses.FindAsync(request.UserId, unit.CourseId);
+        if (userCourse is null)
+        {
+            userCourse = new UserCourse
+            {
+                UserId = request.UserId,
+                CourseId = unit.CourseId,
+                Status = CourseStatus.InProgress
+            };
+            await dbContext.UserCourses.AddAsync(userCourse);
+        }
+
+        var doneUnitsCount = await dbContext.UserUnits
+            .Include(u => u.Unit)
+            .CountAsync(u => u.Unit.CourseId == unit.CourseId && u.Status == UserUnitStatus.Done);
+
+        if (doneUnitsCount >= course.Units.Count - 1 && userUnit.Status is UserUnitStatus.Done)
+            userCourse.Status = CourseStatus.Completed;
+
         await dbContext.SaveChangesAsync();
 
         return new SubmitQuizResponse
@@ -95,12 +137,14 @@ public class QuizManager : IQuizManager
                         Content = question.Content,
                         Order = question.Order,
                         AnswerType = question.AnswerType,
-                        Answers = question.Answers,
-                        Answer = answerAttempt.Answer,
-                        IsCorrectAnswer = answerAttempt.IsCorrect
+                        Answers = question.Answers.OrderBy(a => a.Order).ToArray(),
+                        Answer = answerAttempt.Answer.ToArray(),
+                        IsCorrectAnswer = answerAttempt.IsCorrect,
+                        IncorrectAnswerIds = answerAttempt.Answer.Except(question.CorrectAnswer).ToArray()
                     })
+                .OrderBy(q => q.Order)
                 .ToArray(),
-            IsCorrect = attempt.IsCorrect
+            IsCorrect = attempt.IsCorrect,
         };
     }
 }

@@ -56,7 +56,7 @@ public class CafeLmsDbContext : IdentityDbContext<CafeLmsUser>
             .HasForeignKey(u => u.UserId);
 
         builder.Entity<UserCourse>()
-            .HasOne<Course>()
+            .HasOne(u => u.Course)
             .WithMany()
             .HasForeignKey(u => u.CourseId);
 
@@ -90,6 +90,10 @@ public class CafeLmsDbContext : IdentityDbContext<CafeLmsUser>
         builder.Entity<QuestionInternalModel>()
             .Navigation(q => q.Answers)
             .AutoInclude();
+
+        builder.Entity<QuestionInternalModel>()
+            .Property(q => q.CorrectAnswer)
+            .HasConversion<AnswerConverter>();
 
         builder.Entity<QuizAttempt>()
             .OwnsMany(q => q.Answers, c => c.ToJson());

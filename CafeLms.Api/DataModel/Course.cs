@@ -7,5 +7,5 @@ public class Course
     public string PreviewImageUrl { get; set; }
     public string PositionId { get; set; }
     public Position Position { get; set; }
-    public Unit[] Units { get; set; }
+    public ICollection<Unit> Units { get; set; }
 }

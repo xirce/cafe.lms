@@ -47,10 +47,16 @@ export const axiosBaseQuery = ({ baseUrl }: { baseUrl: string } = { baseUrl: '' 
 }
 
 
+enum Tag {
+    Course = '= Course',
+    QuizAttempt = 'QuizAttempt'
+}
+
 const api = createApi({
     reducerPath: 'api',
     baseQuery: axiosBaseQuery({ baseUrl: 'http://localhost:5270/api' }),
     keepUnusedDataFor: 30,
+    tagTypes: [Tag.Course, Tag.QuizAttempt],
     endpoints: (build) => ({
         getUser: build.query<IUserInfo, string | void>({
             query: (userId) => ({ url: '/users' + (userId ? `/${userId}` : ''), method: 'GET' }),
@@ -64,18 +70,25 @@ const api = createApi({
         }),
         getCourse: build.query<ICourseInfo, IGetCourseRequest>({
             query: ({ courseId, userId }) => ({ url: `/courses/${courseId}?userId=${userId}`, method: 'GET' }),
+            providesTags: (result, _) =>
+                result
+                    ? [...result.units.map(u => ({ type: Tag.Course, id: u.id })), Tag.Course]
+                    : [Tag.Course]
         }),
         getLecture: build.query<ILecture, string | void>({
             query: (unitId) => ({ url: `/lectures/${unitId}`, method: 'GET' }),
         }),
         getQuizAttempt: build.query<IQuizAttempt | null, string | void>({
             query: (unitId) => ({ url: `/quiz/${unitId}/attempt`, method: 'GET' }),
+            providesTags: (result, _) =>
+                result ? [{ type: Tag.QuizAttempt, id: result.quizId }] : []
         }),
         getQuiz: build.query<IQuiz, string | void>({
             query: (unitId) => ({ url: `/quiz/${unitId}`, method: 'GET' }),
         }),
         submitQuiz: build.mutation<ISubmitQuizResponse, ISubmitQuizRequest>({
             query: (request) => ({ url: `/quiz/${request.quizId}/submit`, method: 'POST', data: request }),
+            invalidatesTags: (result) => [{ type: Tag.QuizAttempt, id: result?.quizId }, Tag.QuizAttempt],
         }),
     })
 });

@@ -12,7 +12,7 @@ public class Question
 
 public class QuestionInternalModel : Question
 {
-    public string CorrectAnswer { get; set; }
+    public List<Guid> CorrectAnswer { get; set; }
 }
 
 public enum AnswerType

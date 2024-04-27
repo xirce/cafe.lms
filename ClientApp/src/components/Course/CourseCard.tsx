@@ -1,11 +1,4 @@
-import {
-    Card,
-    CardActionArea,
-    CardContent,
-    CardMedia,
-    Chip,
-    Stack
-} from '@mui/material';
+import { Card, CardActionArea, CardContent, CardMedia, Chip, Stack } from '@mui/material';
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 import React from "react";
@@ -40,15 +33,19 @@ export function CourseCard({ course }: ICourseCardProps) {
                         <Stack direction='row' justifyContent='space-between' alignItems='end'>
                             <Chip label={course.position.title} size='small' />
                             <Stack direction='column' justifyContent='start' alignItems='end'>
-                                <LinearProgress
-                                    variant="determinate"
-                                    value={50}
-                                    color={'success'}
-                                    sx={{width: '100%'}}
-                                />
                                 {
-                                    course.progress
-                                    && <Typography fontSize='small'>Завершен на {course.progress?.unitsDoneCount / course.unitsCount}%</Typography>
+
+                                    course.progress ?
+                                        <>
+                                            <LinearProgress
+                                                variant="determinate"
+                                                value={100 * course.progress?.unitsDoneCount / course.unitsCount}
+                                                color={'success'}
+                                                sx={{ width: '100%' }}
+                                            />
+                                            <Typography fontSize='small'>Завершен
+                                                на {100 * course.progress?.unitsDoneCount / course.unitsCount}%</Typography>
+                                        </> : null
                                 }
                             </Stack>
                         </Stack>
@@ -57,5 +54,6 @@ export function CourseCard({ course }: ICourseCardProps) {
             </Link>
         </Card>
 
-    );
+    )
+        ;
 }
