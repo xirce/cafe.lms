@@ -1,5 +1,7 @@
 using CafeLms.Api.DataModel;
 using CafeLms.Api.Models.Account;
+using IdentityModel;
+using IdentityServer4.Extensions;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -54,11 +56,30 @@ public class AccountController : Controller
     [HttpGet]
     public async Task<IActionResult> Logout(string logoutId)
     {
-        var context = await interactionService.GetLogoutContextAsync(logoutId);
-        if (context?.PostLogoutRedirectUri is null)
-            return Redirect("/Account/Login");
-        await signInManager.SignOutAsync();
+        var vm = await BuildLoggedOutViewModelAsync(logoutId);
 
-        return Redirect(context.PostLogoutRedirectUri);
+        if (User.Identity?.IsAuthenticated == true)
+        {
+            await signInManager.SignOutAsync();
+        }
+
+        return View("LoggedOut", vm);
+    }
+
+    private async Task<LoggedOutViewModel> BuildLoggedOutViewModelAsync(string logoutId)
+    {
+        // get context information (client name, post logout redirect URI and iframe for federated signout)
+        var logout = await interactionService.GetLogoutContextAsync(logoutId);
+
+        var vm = new LoggedOutViewModel
+        {
+            AutomaticRedirectAfterSignOut = true,
+            PostLogoutRedirectUri = logout?.PostLogoutRedirectUri,
+            ClientName = string.IsNullOrEmpty(logout?.ClientName) ? logout?.ClientId : logout?.ClientName,
+            SignOutIframeUrl = logout?.SignOutIFrameUrl,
+            LogoutId = logoutId
+        };
+
+        return vm;
     }
 }

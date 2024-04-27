@@ -6,6 +6,7 @@ using CafeLms.Api.Infrastructure;
 using IdentityModel;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,24 +22,31 @@ builder.Services.AddAuthentication(
             options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         })
-    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
+    .AddCookie(
+        CookieAuthenticationDefaults.AuthenticationScheme,
         o =>
         {
             o.LoginPath = "/Authorize/Login";
             o.Events.OnRedirectToLogin = Events.OnRedirectToLogin;
             o.Events.OnRedirectToAccessDenied = Events.OnRedirectToAccessDenied;
         })
-    .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme,
+    .AddOpenIdConnect(
+        OpenIdConnectDefaults.AuthenticationScheme,
         o =>
         {
+            o.SignOutScheme = IdentityConstants.ExternalScheme;
+
             o.Authority = "http://localhost:5270";
             o.ClientId = "Cafe.Lms.Api";
             o.ClientSecret = "39127022-15a3-4d3f-b3b4-c6e6b00548d9";
             o.ResponseType = OidcConstants.ResponseTypes.Code;
-            o.RequireHttpsMetadata = builder.Environment.IsProduction();
-            o.NonceCookie.SameSite = SameSiteMode.Lax;
 
             o.Scope.Add("Cafe.Lms.Api");
+
+            o.SaveTokens = true;
+
+            o.RequireHttpsMetadata = builder.Environment.IsProduction();
+            o.NonceCookie.SameSite = SameSiteMode.Lax;
         });
 builder.Services.AddAuthorization();
 
@@ -46,10 +54,7 @@ builder.Services.AddCors()
     .AddControllersWithViews()
     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
-builder.Services.Configure<CookiePolicyOptions>(options =>
-{
-    options.MinimumSameSitePolicy = SameSiteMode.Lax;
-});
+builder.Services.Configure<CookiePolicyOptions>(options => { options.MinimumSameSitePolicy = SameSiteMode.Lax; });
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

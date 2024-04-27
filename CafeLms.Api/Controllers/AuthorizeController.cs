@@ -20,7 +20,6 @@ public class AuthorizeController : ControllerBase
     [HttpGet]
     public async Task Logout([FromQuery] string backUrl = DefaultBackPath)
     {
-        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         await HttpContext.SignOutAsync(
             OpenIdConnectDefaults.AuthenticationScheme,
             new AuthenticationProperties { RedirectUri = backUrl });

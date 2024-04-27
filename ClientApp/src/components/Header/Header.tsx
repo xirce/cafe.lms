@@ -49,7 +49,7 @@ const Header = () => {
                             <Typography textAlign="center">Мои курсы</Typography>
                         </MenuItem>
                     </Link>
-                    <Link to='/logout'>
+                    <Link to={`http://localhost:5270/authorize/logout?backUrl=${window.location.href}`}>
                         <MenuItem onClick={handleCloseMenu}>
                             <Typography textAlign="center">Выйти</Typography>
                         </MenuItem>
