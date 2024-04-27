@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CafeLms.Api.Migrations
 {
-    [DbContext(typeof(CadeLmsDbContext))]
+    [DbContext(typeof(CafeLmsDbContext))]
     [Migration("20240426121543_AddCoursePreviewImageMigration")]
     partial class AddCoursePreviewImageMigration
     {

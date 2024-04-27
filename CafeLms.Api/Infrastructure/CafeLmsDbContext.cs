@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CafeLms.Api.Infrastructure;
 
-public class CadeLmsDbContext : IdentityDbContext<CafeLmsUser>
+public class CafeLmsDbContext : IdentityDbContext<CafeLmsUser>
 {
     public DbSet<Position> Positions { get; set; }
     public DbSet<Course> Courses { get; set; }
@@ -15,11 +15,11 @@ public class CadeLmsDbContext : IdentityDbContext<CafeLmsUser>
     public DbSet<QuestionInternalModel> Questions { get; set; }
     public DbSet<QuizAttempt> QuizAttempts { get; set; }
 
-    public CadeLmsDbContext()
+    public CafeLmsDbContext()
     {
     }
 
-    public CadeLmsDbContext(DbContextOptions<CadeLmsDbContext> options) : base(options)
+    public CafeLmsDbContext(DbContextOptions<CafeLmsDbContext> options) : base(options)
     {
     }
 

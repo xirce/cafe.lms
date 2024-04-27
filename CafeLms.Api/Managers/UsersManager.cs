@@ -9,9 +9,9 @@ namespace CafeLms.Api.Managers;
 public class UsersManager : IUsersManager
 {
     private readonly UserManager<CafeLmsUser> userManager;
-    private readonly CadeLmsDbContext dbContext;
+    private readonly CafeLmsDbContext dbContext;
 
-    public UsersManager(UserManager<CafeLmsUser> userManager, CadeLmsDbContext dbContext)
+    public UsersManager(UserManager<CafeLmsUser> userManager, CafeLmsDbContext dbContext)
     {
         this.userManager = userManager;
         this.dbContext = dbContext;

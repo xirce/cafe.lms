@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CafeLms.Api.Migrations
 {
-    [DbContext(typeof(CadeLmsDbContext))]
+    [DbContext(typeof(CafeLmsDbContext))]
     [Migration("20240303202647_InitialMigration")]
     partial class InitialMigration
     {

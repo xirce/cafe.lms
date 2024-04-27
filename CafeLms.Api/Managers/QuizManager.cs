@@ -8,9 +8,9 @@ namespace CafeLms.Api.Managers;
 
 public class QuizManager : IQuizManager
 {
-    private readonly CadeLmsDbContext dbContext;
+    private readonly CafeLmsDbContext dbContext;
 
-    public QuizManager(CadeLmsDbContext dbContext)
+    public QuizManager(CafeLmsDbContext dbContext)
     {
         this.dbContext = dbContext;
     }

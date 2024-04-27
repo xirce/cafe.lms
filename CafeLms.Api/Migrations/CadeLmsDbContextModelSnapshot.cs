@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CafeLms.Api.Migrations
 {
-    [DbContext(typeof(CadeLmsDbContext))]
+    [DbContext(typeof(CafeLmsDbContext))]
     partial class CadeLmsDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

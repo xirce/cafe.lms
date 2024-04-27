@@ -15,9 +15,9 @@ public interface ICoursesManager
 
 public class CoursesManager : ICoursesManager
 {
-    private readonly CadeLmsDbContext dbContext;
+    private readonly CafeLmsDbContext dbContext;
 
-    public CoursesManager(CadeLmsDbContext dbContext)
+    public CoursesManager(CafeLmsDbContext dbContext)
     {
         this.dbContext = dbContext;
     }

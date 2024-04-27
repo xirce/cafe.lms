@@ -13,7 +13,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddDb(this IServiceCollection services, IConfiguration configuration)
     {
-        return services.AddDbContext<CadeLmsDbContext>(
+        return services.AddDbContext<CafeLmsDbContext>(
             options => options.UseNpgsql(configuration.GetConnectionString("Default")));
     }
 
@@ -31,7 +31,7 @@ public static class DependencyInjection
         IdentityServerSettings settings)
     {
         services.AddIdentity<CafeLmsUser, IdentityRole>()
-            .AddEntityFrameworkStores<CadeLmsDbContext>()
+            .AddEntityFrameworkStores<CafeLmsDbContext>()
             .AddDefaultTokenProviders();
 
         services.AddIdentityServer(options =>

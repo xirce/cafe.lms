@@ -8,9 +8,9 @@ namespace CafeLms.Api.Managers;
 
 public class LectureManager : ILectureManager
 {
-    private readonly CadeLmsDbContext dbContext;
+    private readonly CafeLmsDbContext dbContext;
 
-    public LectureManager(CadeLmsDbContext dbContext)
+    public LectureManager(CafeLmsDbContext dbContext)
     {
         this.dbContext = dbContext;
     }

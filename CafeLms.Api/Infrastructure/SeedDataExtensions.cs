@@ -11,7 +11,7 @@ internal static class SeedDataExtensions
         var scope = applicationBuilder.ApplicationServices.CreateScope();
         var serviceProvider = scope.ServiceProvider;
 
-        var dbContext = serviceProvider.GetRequiredService<CadeLmsDbContext>();
+        var dbContext = serviceProvider.GetRequiredService<CafeLmsDbContext>();
         var database = dbContext.Database;
         if (database.IsRelational())
             database.Migrate();
