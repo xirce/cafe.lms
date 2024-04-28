@@ -1,10 +1,11 @@
-import { Card, CardActionArea, CardContent, CardMedia, Chip, Stack } from '@mui/material';
+import { Card, CardActionArea, CardContent, CardMedia, Chip, CircularProgress, Stack } from '@mui/material';
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 import React from "react";
 import LinearProgress from "@mui/material/LinearProgress";
 import { ICourseShortInfo } from "../../types";
 import { getCountDeclination } from "../../utils/formatting";
+import { CircularProgressWithLabel } from "../Common/Progress/CircularProgressWithLabel";
 
 interface ICourseCardProps {
     course: ICourseShortInfo;
@@ -12,7 +13,7 @@ interface ICourseCardProps {
 
 export function CourseCard({ course }: ICourseCardProps) {
     return (
-        <Card sx={{ width: 312 }}>
+        <Card>
             <Link to={`/courses/${course.id}`}>
                 <CardActionArea>
                     <CardMedia
@@ -26,28 +27,10 @@ export function CourseCard({ course }: ICourseCardProps) {
                             <Typography variant='h6' fontWeight={'bold'}>
                                 {course.title}
                             </Typography>
-                            <Typography noWrap overflow='initial'>
-                                {course.unitsCount} {getCountDeclination(course.unitsCount, ['тема', 'темы', 'тем'])}
-                            </Typography>
                         </Stack>
                         <Stack direction='row' justifyContent='space-between' alignItems='end'>
                             <Chip label={course.position.title} size='small' />
-                            <Stack direction='column' justifyContent='start' alignItems='end'>
-                                {
-
-                                    course.progress ?
-                                        <>
-                                            <LinearProgress
-                                                variant="determinate"
-                                                value={100 * course.progress?.unitsDoneCount / course.unitsCount}
-                                                color={'success'}
-                                                sx={{ width: '100%' }}
-                                            />
-                                            <Typography fontSize='small'>Завершен
-                                                на {100 * course.progress?.unitsDoneCount / course.unitsCount}%</Typography>
-                                        </> : null
-                                }
-                            </Stack>
+                            <CircularProgressWithLabel color='success' value={100 * (course.progress?.unitsDoneCount ?? 0) / course.unitsCount} />
                         </Stack>
                     </CardContent>
                 </CardActionArea>

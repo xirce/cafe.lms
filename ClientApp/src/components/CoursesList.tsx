@@ -9,9 +9,11 @@ interface ICoursesListProps {
 }
 
 export function CoursesList({ courses }: ICoursesListProps) {
-    return <Grid container justifyContent='start' gap={6}>
+    return <Grid container justifyContent='start' spacing={2}>
         {
-            courses.map(c => <CourseCard key={c.id} course={c} />)
+            courses.map(c => <Grid item key={c.id} xs={4} md={4}>
+                <CourseCard course={c} />
+            </Grid> )
         }
     </Grid>;
 }

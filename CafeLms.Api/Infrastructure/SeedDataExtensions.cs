@@ -19,22 +19,13 @@ internal static class SeedDataExtensions
         var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
         var userManager = serviceProvider.GetRequiredService<UserManager<CafeLmsUser>>();
 
-        var internRole = SeedRole(roleManager, "intern");
-        var internPosition = dbContext.Positions.SingleOrDefault(p => p.Id == "intern");
-        if (internPosition is null)
-        {
-            internPosition = new Position
-            {
-                Id = "intern",
-                Order = 0,
-                Title = "Стажёр",
-                RoleId = internRole.Id
-            };
-            dbContext.Positions.Add(internPosition);
-            dbContext.SaveChanges();
-        }
+        var internPosition = SeedPosition(dbContext, roleManager, "intern", "Стажёр", 0);
+        SeedPosition(dbContext, roleManager, "barista", "Бариста", 1);
+        SeedPosition(dbContext, roleManager, "manager", "Менеджер", 2);
+        SeedPosition(dbContext, roleManager, "administrator", "Управляющий", 3);
+        var hrPosition = SeedPosition(dbContext, roleManager, "hr", "Менеджер по персоналу", 4);
 
-        var user1 = new CafeLmsUser
+        var intern = new CafeLmsUser
         {
             FirstName = "Юзер",
             LastName = "Юзеров",
@@ -44,7 +35,43 @@ internal static class SeedDataExtensions
             PositionId = internPosition.Id
         };
 
-        SeedUser(userManager, user1, "User123.");
+        var hr = new CafeLmsUser
+        {
+            FirstName = "Эйчар",
+            LastName = "Эйчаров",
+            MiddleName = "Эйчарович",
+            Email = "hr@mail.ru",
+            UserName = "hr@mail.ru",
+            PositionId = hrPosition.Id
+        };
+
+        SeedUser(userManager, intern, "User123.");
+        SeedUser(userManager, hr, "Hr123.");
+    }
+
+    private static Position SeedPosition(
+        CafeLmsDbContext dbContext,
+        RoleManager<IdentityRole> roleManager,
+        string id,
+        string title,
+        int order)
+    {
+        var internRole = SeedRole(roleManager, id);
+        var position = dbContext.Positions.SingleOrDefault(p => p.Id == id);
+        if (position is null)
+        {
+            position = new Position
+            {
+                Id = id,
+                Order = order,
+                Title = title,
+                RoleId = internRole.Id
+            };
+            dbContext.Positions.Add(position);
+            dbContext.SaveChanges();
+        }
+
+        return position;
     }
 
     private static IdentityRole SeedRole(RoleManager<IdentityRole> roleManager, string roleName)

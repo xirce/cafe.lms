@@ -25,9 +25,9 @@ public class CourseController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<GetCoursesResponse> GetCourses()
+    public async Task<GetCoursesResponse> GetCourses(Guid? userId = null)
     {
-        return await coursesManager.GetCourses(User.GetSubjectId());
+        return await coursesManager.GetCourses(User.GetSubjectId(), userId != null);
     }
 
     [HttpGet("{courseId}")]
@@ -41,7 +41,7 @@ public record SaveCourseRequest
 {
     public Guid? Id { get; init; }
     public string Title { get; init; }
-    public string PreviewImageUrl { get; init; } 
+    public string? PreviewImageUrl { get; init; } 
     public string PositionId { get; set; }
 }
 
@@ -67,7 +67,7 @@ public record SaveCourseResponse
 {
     public Guid Id { get; init; }
     public string Title { get; init; }
-    public string PreviewImageUrl { get; init; }
+    public string? PreviewImageUrl { get; init; }
     public PositionInfo Position { get; init; }
 }
 

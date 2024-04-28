@@ -6,8 +6,11 @@ import {
     ICoursesResponse,
     IGetCourseRequest,
     ILecture,
+    IPositionsResponse,
     IQuiz,
     IQuizAttempt,
+    ISaveCourseRequest,
+    ISaveCourseResponse,
     ISubmitQuizRequest,
     ISubmitQuizResponse,
     IUserInfo
@@ -48,15 +51,17 @@ export const axiosBaseQuery = ({ baseUrl }: { baseUrl: string } = { baseUrl: '' 
 
 
 enum Tag {
-    Course = '= Course',
+    Course = 'Course',
+    Unit = 'Unit',
     QuizAttempt = 'QuizAttempt'
 }
+
 
 const api = createApi({
     reducerPath: 'api',
     baseQuery: axiosBaseQuery({ baseUrl: 'http://localhost:5270/api' }),
     keepUnusedDataFor: 30,
-    tagTypes: [Tag.Course, Tag.QuizAttempt],
+    tagTypes: [Tag.Course, Tag.Unit, Tag.QuizAttempt],
     endpoints: (build) => ({
         getUser: build.query<IUserInfo, string | void>({
             query: (userId) => ({ url: '/users' + (userId ? `/${userId}` : ''), method: 'GET' }),
@@ -66,13 +71,13 @@ const api = createApi({
             query: (request) => ({ url: '/users', method: 'POST', data: request }),
         }),
         getCourses: build.query<ICoursesResponse, string | void>({
-            query: (userId) => ({ url: `/courses?userId=${userId}`, method: 'GET' }),
+            query: (userId) => ({ url: '/courses' + (userId ? `?userId=${userId}` : ''), method: 'GET' }),
         }),
         getCourse: build.query<ICourseInfo, IGetCourseRequest>({
             query: ({ courseId, userId }) => ({ url: `/courses/${courseId}?userId=${userId}`, method: 'GET' }),
             providesTags: (result, _) =>
                 result
-                    ? [...result.units.map(u => ({ type: Tag.Course, id: u.id })), Tag.Course]
+                    ? [...result.units.map(u => ({ type: Tag.Unit, id: u.id })), Tag.Course]
                     : [Tag.Course]
         }),
         getLecture: build.query<ILecture, string | void>({
@@ -90,6 +95,13 @@ const api = createApi({
             query: (request) => ({ url: `/quiz/${request.quizId}/submit`, method: 'POST', data: request }),
             invalidatesTags: (result) => [{ type: Tag.QuizAttempt, id: result?.quizId }, Tag.QuizAttempt],
         }),
+        getPositions: build.query<IPositionsResponse, void>({
+            query: () => ({ url: '/positions', method: 'GET' }),
+        }),
+        saveCourse: build.mutation<ISaveCourseResponse, ISaveCourseRequest>({
+            query: (request) => ({ url: '/courses', method: 'POST', data: request }),
+            invalidatesTags: (result) => [{ type: Tag.Course, id: result?.id }],
+        }),
     })
 });
 
@@ -100,8 +112,10 @@ export const {
     useGetLectureQuery,
     useGetQuizAttemptQuery,
     useGetQuizQuery,
+    useGetPositionsQuery,
     useSubmitQuizMutation,
-    useChangeUserMutation
+    useChangeUserMutation,
+    useSaveCourseMutation,
 } = api;
 
 export default api;

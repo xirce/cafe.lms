@@ -2,6 +2,8 @@ import React from 'react';
 import { CoursesList } from "../../components/CoursesList";
 import Typography from "@mui/material/Typography";
 import { useGetCoursesQuery } from "../../api/apiClient";
+import { Button, Stack } from "@mui/material";
+import { Link } from "react-router-dom";
 
 export function CoursesPage() {
     const { data, isSuccess } = useGetCoursesQuery();
@@ -10,7 +12,12 @@ export function CoursesPage() {
         return <Typography>Ошибка</Typography>
 
     return <>
-        <Typography variant='h4' mb={3}>Все курсы</Typography>
+        <Stack direction='row' justifyContent='space-between' mb={3}>
+            <Typography variant='h4'>Все курсы</Typography>
+            <Link to={'courses/new'}>
+                <Button variant='contained'>Создать курс</Button>
+            </Link>
+        </Stack>
         <CoursesList courses={data.courses} />
     </>
 }

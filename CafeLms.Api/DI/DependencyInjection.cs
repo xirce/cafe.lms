@@ -21,6 +21,7 @@ public static class DependencyInjection
     {
         return services.AddScoped<IUsersManager, UsersManager>()
             .AddScoped<IAuthorizationProvider, AuthorizationProvider>()
+            .AddScoped<IPositionsManager, PositionsManager>()
             .AddScoped<ICoursesManager, CoursesManager>()
             .AddScoped<ILectureManager, LectureManager>()
             .AddScoped<IQuizManager, QuizManager>();

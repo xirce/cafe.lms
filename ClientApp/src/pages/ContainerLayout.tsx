@@ -6,8 +6,9 @@ export function ContainerLayout () {
     return <Box
         minWidth="100%"
         minHeight="100%"
-        paddingX={30}
-        paddingY={4}>
+        px={32}
+        pt={6}
+        pb={4}>
         <Outlet/>
     </Box>;
 }

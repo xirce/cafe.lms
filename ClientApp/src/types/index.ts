@@ -1,4 +1,5 @@
 export interface IUserInfo {
+    id: string;
     lastName: string;
     firstName: string;
     middleName: string;
@@ -123,4 +124,22 @@ export interface IPosition {
 
 export interface ICourseProgress {
     unitsDoneCount: number;
+}
+
+export interface IPositionsResponse {
+    positions: IPosition[];
+}
+
+export interface ISaveCourseRequest {
+    id?: string;
+    title: string;
+    previewImageUrl: string;
+    positionId: string;
+}
+
+export interface ISaveCourseResponse {
+    id: string;
+    title: string;
+    previewImageUrl: string;
+    position: IPosition;
 }
