@@ -3,6 +3,9 @@ import { Box, CircularProgress, CircularProgressProps, Typography } from "@mui/m
 export function CircularProgressWithLabel(
     props: CircularProgressProps & { value: number },
 ) {
+    if (!props.value)
+        return null;
+
     return (
         <Box sx={{ position: 'relative', display: 'inline-flex' }}>
             <CircularProgress variant="determinate" {...props} />

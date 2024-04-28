@@ -23,14 +23,16 @@ export function CourseCard({ course }: ICourseCardProps) {
                         alt="preview"
                     />
                     <CardContent>
-                        <Stack direction='row' justifyContent='space-between' alignItems='baseline' mb={1}>
-                            <Typography variant='h6' fontWeight={'bold'}>
-                                {course.title}
-                            </Typography>
-                        </Stack>
-                        <Stack direction='row' justifyContent='space-between' alignItems='end'>
-                            <Chip label={course.position.title} size='small' />
-                            <CircularProgressWithLabel color='success' value={100 * (course.progress?.unitsDoneCount ?? 0) / course.unitsCount} />
+                        <Stack direction='row' justifyContent='space-between'>
+                            <Stack direction='column' justifyContent='space-between' alignItems='start' gap={1}>
+                                <Typography variant='h6' fontWeight={'bold'}>
+                                    {course.title}
+                                </Typography>
+                                <Chip label={course.position.title} size='small' />
+                            </Stack>
+                            <Stack direction='column' justifyContent='end' alignItems='end'>
+                                <CircularProgressWithLabel color='success' value={100 * (course.progress?.unitsDoneCount ?? 0) / course.unitsCount} />
+                            </Stack>
                         </Stack>
                     </CardContent>
                 </CardActionArea>

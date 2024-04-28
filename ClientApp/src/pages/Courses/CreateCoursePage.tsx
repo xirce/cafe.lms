@@ -1,8 +1,7 @@
 import { useForm } from "react-hook-form";
-import { Box, Button, FormControl, MenuItem, Paper, Stack, TextField } from "@mui/material";
+import { Box, Button, Card, CardMedia, FormControl, Grid, MenuItem, Paper, Stack, TextField } from "@mui/material";
 import { useGetPositionsQuery, useSaveCourseMutation } from "../../api/apiClient";
 import Typography from "@mui/material/Typography";
-import { Link } from "react-router-dom";
 import React from "react";
 
 type CourseFormValues = {
@@ -14,7 +13,9 @@ type CourseFormValues = {
 export function CreateCoursePage() {
     const [saveCourse] = useSaveCourseMutation();
     const { data } = useGetPositionsQuery();
-    const { register, handleSubmit } = useForm<CourseFormValues>();
+    const { register, handleSubmit, watch, getValues } = useForm<CourseFormValues>();
+
+    console.log(getValues());
 
     const onSubmit = async (data: CourseFormValues) => {
         console.log(data);
@@ -27,17 +28,24 @@ export function CreateCoursePage() {
         </Stack>
         <form onSubmit={handleSubmit(onSubmit)}>
             <FormControl sx={{ width: '100%', gap: 4, flexDirection: 'row', justifyContent: 'start' }}>
-                <Paper variant='elevation' sx={{ minWidth: 440, height: 240 }}>
-                    {undefined}
-                </Paper>
+                <Card variant='elevation' sx={{ minWidth: 440, height: 240 }}>
+                    <CardMedia
+                        component="img"
+                        width={440}
+                        height={240}
+                        image={watch('previewImageUrl')}
+                        alt="preview"
+                    />
+                </Card>
                 <Stack alignItems='start' justifyContent='space-between'>
-                    <Stack gap={2} width='100%'>
-                        <TextField label='Название' required {...register('title',)} />
+                    <Grid container gap={2}>
+                        <TextField label='Название' required {...register('title')} />
                         <TextField select label="Должность"
                                    defaultValue={data?.positions[0].id}  {...register('positionId')}>
                             {data?.positions.map(p => <MenuItem key={p.id} value={p.id}>{p.title}</MenuItem>)}
                         </TextField>
-                    </Stack>
+                        <TextField label='Ссылка на картинку' {...register('previewImageUrl')} />
+                    </Grid>
                     <Stack>
                         <Button variant='contained' type='submit'>Создать</Button>
                     </Stack>

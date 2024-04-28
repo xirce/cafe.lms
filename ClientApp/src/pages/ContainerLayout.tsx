@@ -6,9 +6,11 @@ export function ContainerLayout () {
     return <Box
         minWidth="100%"
         minHeight="100%"
-        px={32}
+        px={4}
         pt={6}
         pb={4}>
-        <Outlet/>
+        <Box mx='auto' maxWidth={1000}>
+            <Outlet/>
+        </Box>
     </Box>;
 }

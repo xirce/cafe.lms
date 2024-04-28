@@ -11,7 +11,7 @@ interface ICoursesListProps {
 export function CoursesList({ courses }: ICoursesListProps) {
     return <Grid container justifyContent='start' spacing={2}>
         {
-            courses.map(c => <Grid item key={c.id} xs={4} md={4}>
+            courses.map(c => <Grid item key={c.id} sm={6} md={4}>
                 <CourseCard course={c} />
             </Grid> )
         }
