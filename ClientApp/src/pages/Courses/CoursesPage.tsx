@@ -14,7 +14,7 @@ export function CoursesPage() {
     return <>
         <Stack direction='row' justifyContent='space-between' mb={5} pb={1} borderBottom={1} borderColor={'divider'}>
             <Typography variant='h4'>Все курсы</Typography>
-            <Link to={'courses/new'}>
+            <Link to={'/courses/new'}>
                 <Button variant='contained'>Создать курс</Button>
             </Link>
         </Stack>

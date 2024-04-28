@@ -3,7 +3,8 @@ import { CoursesList } from "../../components/CoursesList";
 import Typography from "@mui/material/Typography";
 import { useGetCoursesQuery, useGetUserQuery } from "../../api/apiClient";
 import { Stack } from "@mui/material";
-import { CheckCircle } from "@mui/icons-material";
+import { CheckCircle, Circle } from "@mui/icons-material";
+import { amber } from "@mui/material/colors";
 
 export function MyCoursesPage() {
     const { data: user } = useGetUserQuery();
@@ -19,7 +20,7 @@ export function MyCoursesPage() {
             {
                 coursesDone < data.courses.length
                     ? <Stack>
-                        <CheckCircle color='success' />
+                        <Circle sx={{ alignSelf: 'center', color: amber.A400 }} />
                         <Typography variant='h5' color='yellow'>В процессе - {data.courses.length - coursesDone}</Typography>
                     </Stack>
                     : null

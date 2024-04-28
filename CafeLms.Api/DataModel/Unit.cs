@@ -7,5 +7,6 @@ public class Unit
     public int Order { get; set; }
     public string Title { get; set; }
     public string Content { get; set; }
+    public string? VideoUrl { get; set; }
     public ICollection<QuestionInternalModel> Questions { get; set; }
 }

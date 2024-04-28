@@ -9,7 +9,7 @@ export function ContainerLayout () {
         px={4}
         pt={6}
         pb={4}>
-        <Box mx='auto' maxWidth={1000}>
+        <Box pb={6} mx='auto' maxWidth={1000}>
             <Outlet/>
         </Box>
     </Box>;

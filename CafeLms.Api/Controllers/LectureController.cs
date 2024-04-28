@@ -40,8 +40,10 @@ public record SaveLectureResponse
 public record GetLectureResponse
 {
     public Guid Id { get; init; }
+    public Guid CourseId { get; init; }
     public string Title { get; set; }
     public string Content { get; set; }
+    public string? VideoUrl { get; set; }
     public int Order { get; set; }
 }
 
@@ -50,6 +52,7 @@ public record SaveLectureRequest
     public Guid? LectureId { get; init; }
     public string Title { get; init; }
     public string Content { get; init; }
+    public string? VideoUrl { get; init; }
     public int Order { get; init; }
     public Guid CourseId { get; init; }
 }

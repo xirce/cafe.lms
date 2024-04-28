@@ -143,3 +143,21 @@ export interface ISaveCourseResponse {
     previewImageUrl: string;
     position: IPosition;
 }
+
+export interface ISaveLectureResponse {
+    id: string;
+    title: string;
+    content: string;
+    order: number;
+    courseId: string;
+    videoUrl?: string;
+}
+
+export interface ISaveLectureRequest {
+    lectureId?: string;
+    title: string;
+    content: string;
+    order: number;
+    courseId: string;
+    videoUrl?: string;
+}

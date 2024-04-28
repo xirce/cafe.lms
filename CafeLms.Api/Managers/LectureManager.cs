@@ -29,6 +29,7 @@ public class LectureManager : ILectureManager
         unit.Title = request.Title;
         unit.Content = request.Content;
         unit.Order = request.Order;
+        unit.VideoUrl = request.VideoUrl;
 
         await dbContext.SaveChangesAsync();
 
@@ -48,8 +49,10 @@ public class LectureManager : ILectureManager
         return new GetLectureResponse
         {
             Id = unit.Id,
+            CourseId = unit.CourseId,
             Title = unit.Title,
             Content = unit.Content,
+            VideoUrl = unit.VideoUrl,
             Order = unit.Order
         };
     }

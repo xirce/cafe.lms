@@ -11,6 +11,8 @@ import {
     IQuizAttempt,
     ISaveCourseRequest,
     ISaveCourseResponse,
+    ISaveLectureRequest,
+    ISaveLectureResponse,
     ISubmitQuizRequest,
     ISubmitQuizResponse,
     IUserInfo
@@ -49,13 +51,11 @@ export const axiosBaseQuery = ({ baseUrl }: { baseUrl: string } = { baseUrl: '' 
     }
 }
 
-
 enum Tag {
     Course = 'Course',
     Unit = 'Unit',
     QuizAttempt = 'QuizAttempt'
 }
-
 
 const api = createApi({
     reducerPath: 'api',
@@ -102,6 +102,10 @@ const api = createApi({
             query: (request) => ({ url: '/courses', method: 'POST', data: request }),
             invalidatesTags: (result) => [{ type: Tag.Course, id: result?.id }],
         }),
+        saveLecture: build.mutation<ISaveLectureResponse, ISaveLectureRequest>({
+            query: (request) => ({ url: '/lectures', method: 'POST', data: request }),
+            invalidatesTags: (result) => [{ type: Tag.Course, id: result?.id }],
+        }),
     })
 });
 
@@ -116,6 +120,7 @@ export const {
     useSubmitQuizMutation,
     useChangeUserMutation,
     useSaveCourseMutation,
+    useSaveLectureMutation,
 } = api;
 
 export default api;
