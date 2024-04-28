@@ -18,6 +18,6 @@ export function CoursesPage() {
                 <Button variant='contained'>Создать курс</Button>
             </Link>
         </Stack>
-        <CoursesList courses={data.courses} />
+        <CoursesList courses={data.courses} editable />
     </>
 }
