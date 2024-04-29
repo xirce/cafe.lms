@@ -3,7 +3,7 @@ import { CoursesList } from "../../components/CoursesList";
 import Typography from "@mui/material/Typography";
 import { useGetCoursesQuery, useGetUserQuery } from "../../api/apiClient";
 import { Stack } from "@mui/material";
-import { CheckCircle, Circle } from "@mui/icons-material";
+import { CheckCircle, Timelapse } from "@mui/icons-material";
 import { amber } from "@mui/material/colors";
 
 export function MyCoursesPage() {
@@ -19,9 +19,9 @@ export function MyCoursesPage() {
             <Typography variant='h5' mr={6}>Всего - {data.courses.length}</Typography>
             {
                 coursesDone < data.courses.length
-                    ? <Stack>
-                        <Circle sx={{ alignSelf: 'center', color: amber.A400 }} />
-                        <Typography variant='h5' color='yellow'>В процессе - {data.courses.length - coursesDone}</Typography>
+                    ? <Stack direction='row' gap={1} alignItems='start'>
+                        <Timelapse sx={{ alignSelf: 'center', color: amber.A400 }} />
+                        <Typography variant='h5'>В процессе - {data.courses.length - coursesDone}</Typography>
                     </Stack>
                     : null
             }

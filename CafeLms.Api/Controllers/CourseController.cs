@@ -55,7 +55,7 @@ public class Unit
     public Guid Id { get; set; }
     public string Title { get; set; }
     public int Order { get; set; }
-    public UserUnitProgress Progress { get; set; }
+    public UserUnitProgress? Progress { get; set; }
 }
 
 public record UserUnitProgress

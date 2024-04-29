@@ -25,7 +25,7 @@ export function CourseCard({ course, editable }: ICourseCardProps) {
                                         disableRipple
                                         sx={(theme) => ({
                                             backgroundColor: 'white',
-                                            borderRadius: 2,
+                                            borderRadius: 1,
                                             opacity: theme.palette.text.primary,
                                             '.MuiCard-root:not(:hover) &': {
                                                 display: 'none'

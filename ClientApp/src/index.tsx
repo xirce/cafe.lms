@@ -20,6 +20,7 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { MyCoursesPage } from "./pages/Courses/MyCoursesPage";
 import { EditCoursePage } from "./pages/Courses/EditCoursePage";
+import { EditLecturePage } from "./pages/Lecture/EditLecturePage";
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -56,6 +57,14 @@ const router = createBrowserRouter([
                     {
                         path: 'courses/:courseId/edit',
                         element: <EditCoursePage />
+                    },
+                    {
+                        path: 'courses/:courseId/unit/new',
+                        element: <EditLecturePage />
+                    },
+                    {
+                        path: 'courses/:courseId/unit/:unitId/edit',
+                        element: <EditLecturePage />
                     }
                 ]
             },

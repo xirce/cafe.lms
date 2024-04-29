@@ -56,6 +56,7 @@ export interface ILecture {
     id: string;
     title: string;
     content: string;
+    order: number;
 }
 
 export interface IQuiz {

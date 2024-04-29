@@ -22,7 +22,7 @@ public class LectureManager : ILectureManager
 
         if (unit is null)
         {
-            unit = new Unit();
+            unit = new Unit { CourseId = request.CourseId };
             await dbContext.Units.AddAsync(unit);
         }
 

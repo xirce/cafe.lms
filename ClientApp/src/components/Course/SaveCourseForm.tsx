@@ -1,8 +1,20 @@
-import { Button, Card, CardMedia, FormControl, Grid, MenuItem, Stack, TextField } from "@mui/material";
+import {
+    Button,
+    Card,
+    CardMedia,
+    FormControl,
+    Grid,
+    InputLabel,
+    MenuItem,
+    Select,
+    Stack,
+    TextField
+} from "@mui/material";
 import { useSaveCourseMutation } from "../../api/apiClient";
 import { useForm } from "react-hook-form";
 import { ICourseShortInfo, IPosition } from "../../types";
 import { useNavigate } from "react-router-dom";
+import Box from "@mui/material/Box";
 
 
 interface ISaveCourseFormProps {
@@ -11,7 +23,7 @@ interface ISaveCourseFormProps {
 }
 
 type CourseFormValues = {
-    courseId?: string;
+    id?: string;
     title: string;
     previewImageUrl: string;
     positionId: string;
@@ -20,9 +32,9 @@ type CourseFormValues = {
 export function SaveCourseForm(props: ISaveCourseFormProps) {
     const [saveCourse, { isSuccess }] = useSaveCourseMutation();
     const navigate = useNavigate();
-    const { register, handleSubmit, watch, reset, formState } = useForm<CourseFormValues>({
+    const { register, handleSubmit, watch, reset, formState, getValues } = useForm<CourseFormValues>({
         defaultValues: {
-            courseId: props.course?.id,
+            id: props.course?.id,
             title: props.course?.title,
             positionId: props.course?.position.id,
             previewImageUrl: props.course?.previewImageUrl
@@ -53,17 +65,22 @@ export function SaveCourseForm(props: ISaveCourseFormProps) {
                 <Grid container justifyContent='start' gap={3}>
                     <Stack direction='row' gap={3}>
                         <TextField label='Название' required {...register('title')} />
-                        <TextField
-                            select label="Должность"
-                            defaultValue={props.course?.position.id ?? props.positions[0].id}
-                            {...register('positionId')}>
-                            {props?.positions.map(p => <MenuItem key={p.id} value={p.id}>{p.title}</MenuItem>)}
-                        </TextField>
+                        <FormControl>
+                            <InputLabel id='position-label'>Должность</InputLabel>
+                            <Select
+                                labelId='position-label'
+                                label='Должность'
+                                defaultValue={props.course?.position.id ?? props.positions[0].id}
+                                {...register('positionId')}>
+                                {props?.positions.map(p => <MenuItem key={p.id} value={p.id}>{p.title}</MenuItem>)}
+                            </Select>
+                        </FormControl>
+
                     </Stack>
                     <TextField label='Ссылка на картинку' {...register('previewImageUrl')} />
                 </Grid>
                 <Stack direction='row' alignItems='end' gap={3}>
-                    <Button disabled={!formState.isDirty || !formState.isValid} variant='contained'
+                    <Button disabled={!formState.isDirty || !formState.errors} variant='contained'
                             type='submit'>{props.course ? 'Сохранить' : 'Создать'}</Button>
                 </Stack>
             </Stack>

@@ -104,7 +104,7 @@ const api = createApi({
         }),
         saveLecture: build.mutation<ISaveLectureResponse, ISaveLectureRequest>({
             query: (request) => ({ url: '/lectures', method: 'POST', data: request }),
-            invalidatesTags: (result) => [{ type: Tag.Course, id: result?.id }],
+            invalidatesTags: (result) => [{ type: Tag.Course, id: result?.courseId }],
         }),
     })
 });

@@ -31,7 +31,7 @@ public class LectureController : ControllerBase
 
 public record SaveLectureResponse
 {
-    public Guid Id { get; init; }
+    public Guid? Id { get; init; }
     public string Title { get; init; }
     public string Content { get; init; }
     public int Order { get; init; }

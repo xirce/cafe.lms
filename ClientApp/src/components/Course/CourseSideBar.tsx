@@ -12,28 +12,8 @@ import Drawer from "@mui/material/Drawer";
 import React from "react";
 import { CheckCircle, Circle } from "@mui/icons-material";
 import { ICourseInfo, UserUnitStatus } from "../../types";
-import { Simulate } from "react-dom/test-utils";
 
 const drawerWidth = 280;
-
-const units = [
-    {
-        name: '1. Раздел',
-        done: true
-    },
-    {
-        name: '2. Раздел ываыаыаыаыаыыффыфыфыфыфыыф',
-        done: true
-    },
-    {
-        name: '3. Раздел'
-    },
-    {
-        name: '4. Раздел'
-    },
-];
-
-const unitsDone = units.filter(u => u.done).length;
 
 interface ICourseSideBarProps {
     course: ICourseInfo;
@@ -79,7 +59,7 @@ export function CourseSideBar({ course }: ICourseSideBarProps) {
         </Box>
         <Divider />
         <List>
-            {course.units.map(({ id, title, progress }) => (
+            {course.units.slice().sort((a, b) => a.order - b.order).map(({ id, title, progress }) => (
                 <NavLink key={id} to={`unit/${id}`}>
                     <ListItem
                         disablePadding>

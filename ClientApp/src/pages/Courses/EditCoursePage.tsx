@@ -1,52 +1,10 @@
 import React from "react";
-import { useForm } from "react-hook-form";
-import { Box, Button, Card, CardMedia, FormControl, Stack } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import { useGetCourseQuery, useGetPositionsQuery, useSaveLectureMutation } from "../../api/apiClient";
-import { SaveCourseForm } from "../../components/Course/SaveCourseForm";
 import { useParams } from "react-router-dom";
-
-interface ILectureFormProps {
-    courseId: string;
-}
-
-type LectureFormValues = {
-    title: string;
-    content: string;
-    order: number;
-    videoUrl?: string;
-    courseId: string;
-}
-
-function CreateLectureForm(props: ILectureFormProps) {
-    const [saveLecture] = useSaveLectureMutation();
-    const { register, handleSubmit, watch, getValues } = useForm<LectureFormValues>({});
-
-    console.log(getValues());
-
-    const onSubmit = async (data: LectureFormValues) => {
-        console.log(data);
-        await saveLecture({ ...data });
-    };
-
-    return <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl sx={{ width: '100%', gap: 4, flexDirection: 'row', justifyContent: 'start' }}>
-            <Card variant='elevation' sx={{ minWidth: 440, height: 240 }}>
-                <CardMedia
-                    component="img"
-                    width={440}
-                    height={240}
-                    alt="preview"
-                />
-            </Card>
-            <Stack alignItems='start' justifyContent='space-between'>
-                <Stack>
-                    <Button variant='contained' type='submit'>Создать</Button>
-                </Stack>
-            </Stack>
-        </FormControl>
-    </form>;
-}
+import { Box, Stack } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import { useGetCourseQuery, useGetPositionsQuery } from "../../api/apiClient";
+import { SaveCourseForm } from "../../components/Course/SaveCourseForm";
+import { UnitsList } from "../../components/UnitsList";
 
 export function EditCoursePage() {
     const { data: positions } = useGetPositionsQuery();
@@ -65,10 +23,10 @@ export function EditCoursePage() {
             <SaveCourseForm positions={positions.positions} course={course} />
         </Box>
         {
-            courseId
+            course
                 ? <Box borderTop={1} borderColor='divider' pt={5}>
-                    <Typography variant='h5' mb={2}>Содержимое</Typography>
-                    <CreateLectureForm courseId={courseId} />
+                    <Typography variant='h5' mb={2}>Содержание</Typography>
+                    <UnitsList courseId={course.id} units={course.units} />
                 </Box>
                 : null
         }
