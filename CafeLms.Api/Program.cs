@@ -42,6 +42,7 @@ builder.Services.AddAuthentication(
             o.ResponseType = OidcConstants.ResponseTypes.Code;
 
             o.Scope.Add("Cafe.Lms.Api");
+            o.Scope.Add("roles");
 
             o.SaveTokens = true;
 

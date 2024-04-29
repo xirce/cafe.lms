@@ -9,7 +9,7 @@ export function ProfilePage() {
     const { data, isSuccess } = useGetUserQuery();
 
     if (!isSuccess)
-        return <Typography>Ошибка</Typography>
+        return null;
 
     return <Stack width={520} mx='auto'>
         <Typography variant='h4' mb={1} >Профиль</Typography>

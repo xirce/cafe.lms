@@ -18,9 +18,15 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<GetUserResponse> GetUser()
+    public async Task<UserInfo> GetUser()
     {
         return await usersManager.GetUser(User.GetSubjectId());
+    }
+
+    [HttpGet("all")]
+    public async Task<GetUsersResponse> GetUsers()
+    {
+        return await usersManager.GetUsers();
     }
 
     [HttpPost]
@@ -33,12 +39,12 @@ public class UserController : ControllerBase
     [HttpGet("permissions")]
     public async Task<GetUserPermissionsResponse> GetPermissions()
     {
-        var permissions = await authorizationProvider.GetUserPermissions(User.GetSubjectId());
+        var permissions = await authorizationProvider.GetUserPermissions(User);
         return new GetUserPermissionsResponse(permissions);
     }
 
     [HttpGet("{userId}")]
-    public async Task<GetUserResponse> GetUser(string userId)
+    public async Task<UserInfo> GetUser(string userId)
     {
         return await usersManager.GetUser(userId);
     }
@@ -46,7 +52,7 @@ public class UserController : ControllerBase
 
 public record GetUserPermissionsResponse(string[] Permissions);
 
-public class GetUserResponse
+public record UserInfo
 {
     public string Id { get; set; }
     public string FirstName { get; set; }

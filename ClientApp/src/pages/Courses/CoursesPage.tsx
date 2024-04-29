@@ -1,15 +1,17 @@
 import React from 'react';
-import { CoursesList } from "../../components/CoursesList";
 import Typography from "@mui/material/Typography";
-import { useGetCoursesQuery } from "../../api/apiClient";
 import { Button, Stack } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useGetCoursesQuery, useGetPermissionsQuery } from "../../api/apiClient";
+import { CoursesList } from "../../components/CoursesList";
+import { Permission } from "../../authorization/permissions";
 
 export function CoursesPage() {
-    const { data, isSuccess } = useGetCoursesQuery();
+    const { data } = useGetCoursesQuery();
+    const { data: permissions } = useGetPermissionsQuery();
 
-    if (!isSuccess)
-        return <Typography>Ошибка</Typography>
+    if (!data || !permissions)
+        return null
 
     return <>
         <Stack direction='row' justifyContent='space-between' mb={5} pb={1} borderBottom={1} borderColor={'divider'}>
@@ -18,6 +20,6 @@ export function CoursesPage() {
                 <Button variant='contained'>Создать курс</Button>
             </Link>
         </Stack>
-        <CoursesList courses={data.courses} editable />
+        <CoursesList courses={data.courses} editable={permissions.permissions.includes(Permission.EditCourse)} />
     </>
 }

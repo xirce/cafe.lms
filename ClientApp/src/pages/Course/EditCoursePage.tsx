@@ -12,7 +12,7 @@ export function EditCoursePage() {
     const { data: course } = useGetCourseQuery({ courseId: courseId as string }, { skip: !courseId });
 
     if (!positions || courseId && !course)
-        return <Typography>Ошибка</Typography>
+        return null
 
     return <>
         <Stack mb={5} pb={1} borderBottom={1} borderColor={'divider'}>

@@ -77,7 +77,7 @@ public class CoursesManager : ICoursesManager
                     UnitsCount = c.Units.Count,
                     Position = new PositionInfo
                     {
-                        Id = c.Position.Title,
+                        Id = c.Position.Id,
                         Title = c.Position.Title
                     }
                 }).ToArrayAsync();

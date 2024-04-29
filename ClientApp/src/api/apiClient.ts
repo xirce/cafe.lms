@@ -57,6 +57,14 @@ enum Tag {
     QuizAttempt = 'QuizAttempt'
 }
 
+interface IGetUsersResponse {
+    users: IUserInfo[];
+}
+
+interface IGetPermissionResponse {
+    permissions: string[];
+}
+
 const api = createApi({
     reducerPath: 'api',
     baseQuery: axiosBaseQuery({ baseUrl: 'http://localhost:5270/api' }),
@@ -106,6 +114,12 @@ const api = createApi({
             query: (request) => ({ url: '/lectures', method: 'POST', data: request }),
             invalidatesTags: (result) => [{ type: Tag.Course, id: result?.courseId }],
         }),
+        getUsers: build.query<IGetUsersResponse, void>({
+            query: () => ({ url: '/users/all', method: 'GET' }),
+        }),
+        getPermissions: build.query<IGetPermissionResponse, void>({
+            query: () => ({ url: '/users/permissions', method: 'GET' }),
+        }),
     })
 });
 
@@ -117,6 +131,8 @@ export const {
     useGetQuizAttemptQuery,
     useGetQuizQuery,
     useGetPositionsQuery,
+    useGetUsersQuery,
+    useGetPermissionsQuery,
     useSubmitQuizMutation,
     useChangeUserMutation,
     useSaveCourseMutation,

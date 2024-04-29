@@ -3,6 +3,7 @@ using CafeLms.Api.DataModel;
 using CafeLms.Api.Infrastructure;
 using CafeLms.Api.Managers.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace CafeLms.Api.Managers;
 
@@ -17,13 +18,13 @@ public class UsersManager : IUsersManager
         this.dbContext = dbContext;
     }
 
-    public async Task<GetUserResponse> GetUser(string id)
+    public async Task<UserInfo> GetUser(string id)
     {
         var user = await userManager.FindByIdAsync(id);
 
         var position = await dbContext.Positions.FindAsync(user.PositionId);
 
-        return new GetUserResponse
+        return new UserInfo
         {
             Id = id,
             LastName = user.LastName,
@@ -33,7 +34,8 @@ public class UsersManager : IUsersManager
             Position = new PositionInfo
             {
                 Id = position.Id,
-                Title = position.Title
+                Title = position.Title,
+                Order = position.Order
             }
         };
     }
@@ -48,5 +50,28 @@ public class UsersManager : IUsersManager
         user.Email = request.Email;
 
         await userManager.UpdateAsync(user);
+    }
+
+    public async Task<GetUsersResponse> GetUsers()
+    {
+        var users = await dbContext.Users
+            .Include(u => u.Position)
+            .Select(u => new UserInfo
+            {
+                Id = u.Id,
+                LastName = u.LastName,
+                FirstName = u.FirstName,
+                MiddleName = u.MiddleName,
+                Email = u.Email,
+                Position = new PositionInfo
+                {
+                    Id = u.Position.Id,
+                    Title = u.Position.Title,
+                    Order = u.Position.Order
+                }
+            })
+            .ToArrayAsync();
+
+        return new GetUsersResponse(users);
     }
 }

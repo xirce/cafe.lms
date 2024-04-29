@@ -27,7 +27,7 @@ public class CourseController : ControllerBase
     [HttpGet]
     public async Task<GetCoursesResponse> GetCourses(Guid? userId = null)
     {
-        return await coursesManager.GetCourses(User.GetSubjectId(), userId != null);
+        return await coursesManager.GetCourses(userId?.ToString() ?? User.GetSubjectId(), userId != null);
     }
 
     [HttpGet("{courseId}")]

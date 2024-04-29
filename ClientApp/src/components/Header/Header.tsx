@@ -1,10 +1,29 @@
 import React, { useState } from 'react';
-import { Avatar, IconButton, Menu, MenuItem } from "@mui/material";
+import { Avatar, Button, IconButton, Menu, MenuItem, Stack } from "@mui/material";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import AppBar from "@mui/material/AppBar";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useGetUserQuery } from "../../api/apiClient";
+import { Coffee } from "@mui/icons-material";
+import Box from "@mui/material/Box";
+
+
+const pages = [
+    {
+        title: 'Все курсы',
+        link: 'courses'
+    },
+    {
+        title: 'Мои курсы',
+        link: 'my-courses'
+    },
+    {
+        title: 'Сотрудники',
+        link: 'users'
+    },
+]
+
 
 const Header = () => {
     const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>();
@@ -19,11 +38,35 @@ const Header = () => {
             sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
         >
             <Toolbar sx={{ justifyContent: 'space-between' }}>
-                <Typography variant="h6" noWrap component="div">
-                    <Link to='/'>Cafe LMS</Link>
-                </Typography>
+                <Stack direction='row' gap={2}>
+                    <Stack direction='row' alignItems='center' gap={1}>
+                        <Coffee />
+                        <Typography variant="h6" noWrap component="div">
+                            <Link to='/'>Cafe LMS</Link>
+                        </Typography>
+                    </Stack>
+                    <Box>
+                        {pages.map((page) => (
+                            <NavLink end to={page.link}>
+                                <Button
+                                    key={page.link}
+                                    onClick={handleCloseMenu}
+                                    sx={(theme) => ({
+                                        color: 'white',
+                                        '.active &': {
+                                            backgroundColor: theme.palette.primary.dark
+                                        }
+                                    })}
+                                >
+                                    {page.title}
+                                </Button>
+                            </NavLink>
+                        ))}
+                    </Box>
+                </Stack>
                 <IconButton disableRipple onClick={handleOpenMenu}>
-                    <Avatar alt={user?.lastName + ' ' + user?.firstName} src={'/s'}>{user?.lastName[0]}{user?.firstName[0]}</Avatar>
+                    <Avatar alt={user?.lastName + ' ' + user?.firstName}
+                            src={'/s'}>{user?.lastName[0]}{user?.firstName[0]}</Avatar>
                 </IconButton>
                 <Menu
                     sx={{ mt: '40px' }}
@@ -44,11 +87,6 @@ const Header = () => {
                     <Link to='/profile'>
                         <MenuItem onClick={handleCloseMenu}>
                             <Typography textAlign="center">Профиль</Typography>
-                        </MenuItem>
-                    </Link>
-                    <Link to='/my-courses'>
-                        <MenuItem onClick={handleCloseMenu}>
-                            <Typography textAlign="center">Мои курсы</Typography>
                         </MenuItem>
                     </Link>
                     <Link to={`http://localhost:5270/authorize/logout?backUrl=${window.location.href}`}>

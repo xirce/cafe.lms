@@ -6,9 +6,12 @@ namespace CafeLms.Api.Managers.Interfaces;
 
 public interface IUsersManager
 {
-    Task<GetUserResponse> GetUser(string id);
+    Task<UserInfo> GetUser(string id);
     Task ChangeUser(ChangeUserRequest request);
+    Task<GetUsersResponse> GetUsers();
 }
+
+public record GetUsersResponse(UserInfo[] Users);
 
 public record ChangeUserRequest
 {

@@ -5,22 +5,23 @@ import { store } from './app/store';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 import { CoursesPage } from "./pages/Courses/CoursesPage";
-import CoursePage from "./pages/Courses/CoursePage";
+import CoursePage from "./pages/Course/CoursePage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ProfilePage } from "./pages/Profile/ProfilePage";
 import CssBaseline from "@mui/material/CssBaseline";
-import { Lecture } from "./pages/Courses/Lecture";
+import { Lecture } from "./pages/Course/Lecture";
 import { LayoutWithHeader } from "./pages/LayoutWithHeader";
 import { ContainerLayout } from "./pages/ContainerLayout";
-import { Quiz } from "./pages/Courses/Quiz";
+import { Quiz } from "./pages/Course/Quiz";
 import { CourseLayout } from "./pages/CourseLayout";
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { MyCoursesPage } from "./pages/Courses/MyCoursesPage";
-import { EditCoursePage } from "./pages/Courses/EditCoursePage";
+import { UserCoursesPage } from "./pages/Courses/UserCoursesPage";
+import { EditCoursePage } from "./pages/Course/EditCoursePage";
 import { EditLecturePage } from "./pages/Lecture/EditLecturePage";
+import { UsersPage } from "./pages/Users/UsersPage";
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -44,7 +45,15 @@ const router = createBrowserRouter([
                     },
                     {
                         path: "my-courses",
-                        element: <MyCoursesPage />,
+                        element: <UserCoursesPage />,
+                    },
+                    {
+                        path: "users/:userId/courses",
+                        element: <UserCoursesPage />,
+                    },
+                    {
+                        path: 'users',
+                        element: <UsersPage />
                     },
                     {
                         path: "profile",
@@ -65,7 +74,7 @@ const router = createBrowserRouter([
                     {
                         path: 'courses/:courseId/unit/:unitId/edit',
                         element: <EditLecturePage />
-                    }
+                    },
                 ]
             },
             {

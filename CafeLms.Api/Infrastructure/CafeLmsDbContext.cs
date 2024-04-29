@@ -28,7 +28,7 @@ public class CafeLmsDbContext : IdentityDbContext<CafeLmsUser>
         base.OnModelCreating(builder);
 
         builder.Entity<CafeLmsUser>()
-            .HasOne<Position>()
+            .HasOne(u => u.Position)
             .WithMany()
             .HasForeignKey(u => u.PositionId);
 

@@ -1,11 +1,16 @@
+using System.Security.Claims;
 using CafeLms.Api.Managers.Interfaces;
+using ClaimTypes = CafeLms.Api.Authorization.ClaimTypes;
 
 namespace CafeLms.Api.Managers;
 
 public class AuthorizationProvider : IAuthorizationProvider
 {
-    public async Task<string[]> GetUserPermissions(string userId)
+    public Task<string[]> GetUserPermissions(ClaimsPrincipal user)
     {
-        return Array.Empty<string>();
+        return Task.FromResult(user.Claims
+            .Where(c => c.Type == ClaimTypes.Permission)
+            .Select(c => c.Value)
+            .ToArray());
     }
 }

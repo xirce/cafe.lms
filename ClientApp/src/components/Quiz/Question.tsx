@@ -26,7 +26,7 @@ export function Question({ questionWithAnswer }: IQuestionProps) {
                 answer={{
                     ...a,
                     type: questionWithAnswer.answerType,
-                    isCorrect: questionWithAnswer.answer.includes(a.id) && !questionWithAnswer.incorrectAnswerIds.includes(a.id),
+                    isCorrect: questionWithAnswer.answer?.includes(a.id) && !questionWithAnswer.incorrectAnswerIds?.includes(a.id),
                     questionId: questionWithAnswer.id,
                 }}
                 isChecked={isAnswerChecked(a, renderProps.field)}
