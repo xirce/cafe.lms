@@ -17,9 +17,58 @@ public class QuizManager : IQuizManager
         this.dbContext = dbContext;
     }
 
-    public Task<SaveQuizResponse> SaveQuiz(SaveQuizRequest request)
+    public async Task<SaveQuestionResponse> SaveQuestion(SaveQuestionRequest request)
     {
-        throw new NotImplementedException();
+        var question = await dbContext.Questions.FirstOrDefaultAsync(
+            u => u.QuizId == request.QuizId && u.Id == request.QuestionId);
+
+        if (question is null)
+        {
+            question = new QuestionInternalModel { QuizId = request.QuizId };
+            await dbContext.Questions.AddAsync(question);
+        }
+
+        question.Content = request.Content;
+        question.Order = request.Order;
+        question.AnswerType = AnswerType.SingleCorrect;
+
+        await dbContext.SaveChangesAsync();
+
+        return new SaveQuestionResponse
+        {
+            QuestionId = question.Id,
+            QuizId = question.QuizId
+        };
+    }
+
+    public async Task<SaveAnswerResponse> SaveAnswer(SaveAnswerRequest request)
+    {
+        var question = await dbContext.Questions.FindAsync(request.QuestionId);
+
+        var answer = question.Answers.FirstOrDefault(a => a.Id == request.AnswerId);
+
+        if (answer is null)
+        {
+            answer = new Answer { QuestionId = question.Id };
+            question.Answers.Add(answer);
+        }
+
+        answer.Content = request.Content;
+        answer.Order = request.Order;
+
+        if (request.IsCorrect)
+            question.CorrectAnswer = new List<Guid> { answer.Id };
+        
+        await dbContext.SaveChangesAsync();
+
+        return new SaveAnswerResponse
+        {
+            QuestionId = answer.QuestionId,
+            AnswerId = answer.Id,
+            Content = answer.Content,
+            Order = answer.Order,
+            IsCorrect = request.IsCorrect
+        };
     }
 
     public async Task<GetQuizResponse> GetQuiz(Guid quizId)

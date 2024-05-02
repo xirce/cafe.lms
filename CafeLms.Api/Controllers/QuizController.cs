@@ -19,10 +19,17 @@ public class QuizController : ControllerBase
         this.quizManager = quizManager;
     }
 
-    [HttpPost]
-    public async Task<SaveQuizResponse> SaveQuiz(SaveQuizRequest request)
+    [HttpPost("question")]
+    public async Task<SaveQuestionResponse> SaveQuestion(SaveQuestionRequest request)
     {
-        return await quizManager.SaveQuiz(request);
+        return await quizManager.SaveQuestion(request);
+    }
+    
+    [HttpPost("question/{questionId}/answer")]
+    public async Task<SaveAnswerResponse> SaveAnswer(Guid questionId, SaveAnswerRequest request)
+    {
+        request = request with { QuestionId = questionId };
+        return await quizManager.SaveAnswer(request);
     }
 
     [HttpGet("{quizId}")]
@@ -44,6 +51,29 @@ public class QuizController : ControllerBase
         request = request with { UserId = User.GetSubjectId(), QuizId = quizId };
         return await quizManager.SubmitQuiz(request);
     }
+}
+
+public class SaveAnswerResponse
+{
+    public Guid QuestionId { get; set; }
+    public Guid AnswerId { get; set; }
+    public string Content { get; set; }
+    public int Order { get; set; }
+    public bool IsCorrect { get; set; }
+}
+
+public class SaveQuestionResponse
+{
+    public Guid QuestionId { get; set; }
+    public Guid QuizId { get; set; }
+}
+
+public record SaveQuestionRequest
+{
+    public Guid? QuestionId { get; set; }
+    public Guid QuizId { get; set; }
+    public string Content { get; set; }
+    public int Order { get; set; }
 }
 
 public record QuestionOrder
@@ -85,18 +115,13 @@ public record GetQuizResponse
     public Question[] Questions { get; set; }
 }
 
-public record SaveQuizResponse
+public record SaveAnswerRequest
 {
-    public Guid QuizId { get; set; }
-    public string Title { get; set; }
-    public QuestionInternalModel[] Questions { get; set; }
-}
-
-public record SaveQuizRequest
-{
-    public Guid QuizId { get; set; }
-    public string Title { get; set; }
-    public QuestionInternalModel[] Questions { get; set; }
+    public Guid? AnswerId { get; set; }
+    public Guid QuestionId { get; set; }
+    public string Content { get; set; }
+    public int Order { get; set; }
+    public bool IsCorrect { get; set; }
 }
 
 public record GetQuizAttemptRequest(string UserId, Guid QuizId);

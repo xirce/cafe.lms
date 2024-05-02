@@ -136,10 +136,12 @@ public class CoursesManager : ICoursesManager
             .Where(u => u.UserId == userId && u.Unit.CourseId == id)
             .ToDictionaryAsync(u => u.UnitId);
 
-        course.Progress = new CourseProgress
-        {
-            UnitsDoneCount = userUnits.Values.Count(u => u.Status is UserUnitStatus.Done)
-        };
+        var unitsDoneCount = userUnits.Values.Count(u => u.Status is UserUnitStatus.Done);
+        if (unitsDoneCount > 0)
+            course.Progress = new CourseProgress
+            {
+                UnitsDoneCount = unitsDoneCount
+            };
 
         foreach (var unit in course.Units)
         {

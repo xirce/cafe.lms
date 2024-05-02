@@ -41,7 +41,7 @@ export function CourseSideBar({ course }: ICourseSideBarProps) {
             <Typography>
                 Прогресс
                 <FormLabel component="legend" sx={{ float: 'right' }}>
-                    {course.progress?.unitsDoneCount}/{course.unitsCount}
+                    {course.progress?.unitsDoneCount ?? 0}/{course.unitsCount}
                 </FormLabel>
             </Typography>
             <LinearProgress

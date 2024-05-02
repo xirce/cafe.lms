@@ -20,7 +20,7 @@ internal static class SeedDataExtensions
         var userManager = serviceProvider.GetRequiredService<UserManager<CafeLmsUser>>();
 
         var internPosition = SeedPosition(dbContext, roleManager, "intern", "Стажёр", 0);
-        SeedPosition(dbContext, roleManager, "barista", "Бариста", 1);
+        var baristaPosition = SeedPosition(dbContext, roleManager, "barista", "Бариста", 1);
         SeedPosition(dbContext, roleManager, "manager", "Менеджер", 2);
         SeedPosition(dbContext, roleManager, "administrator", "Управляющий", 3);
         var hrPosition = SeedPosition(dbContext, roleManager, "hr", "Менеджер по персоналу", 4);
@@ -34,6 +34,16 @@ internal static class SeedDataExtensions
             UserName = "user@mail.ru",
             PositionId = internPosition.Id
         };
+        
+        var barista = new CafeLmsUser
+        {
+            FirstName = "Бариста",
+            LastName = "Баристов",
+            MiddleName = "Баристович",
+            Email = "barista@mail.ru",
+            UserName = "barista@mail.ru",
+            PositionId = baristaPosition.Id
+        };
 
         var hr = new CafeLmsUser
         {
@@ -46,6 +56,7 @@ internal static class SeedDataExtensions
         };
 
         SeedUser(userManager, intern, "User123.");
+        SeedUser(userManager, barista, "User123.");
         SeedUser(userManager, hr, "Hr123.");
     }
 

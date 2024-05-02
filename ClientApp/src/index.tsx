@@ -22,6 +22,7 @@ import { UserCoursesPage } from "./pages/Courses/UserCoursesPage";
 import { EditCoursePage } from "./pages/Course/EditCoursePage";
 import { EditLecturePage } from "./pages/Lecture/EditLecturePage";
 import { UsersPage } from "./pages/Users/UsersPage";
+import { CourseOverviewPage } from "./pages/Course/CourseOverviewPage";
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -62,6 +63,10 @@ const router = createBrowserRouter([
                     {
                         path: 'courses/new',
                         element: <EditCoursePage />
+                    },
+                    {
+                        path: 'courses/:courseId/overview',
+                        element: <CourseOverviewPage />
                     },
                     {
                         path: 'courses/:courseId/edit',

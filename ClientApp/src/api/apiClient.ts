@@ -65,6 +65,32 @@ interface IGetPermissionResponse {
     permissions: string[];
 }
 
+export interface ISaveAnswerRequest {
+    answerId?: string;
+    questionId: string;
+    content: string;
+    order: number;
+    isCorrect: boolean;
+}
+
+interface ISaveAnswerResponse {
+    questionId: string;
+    answerId: string;
+    content: string;
+}
+
+interface ISaveQuestionResponse {
+    questionId: string;
+    quizId: string;
+}
+
+export interface ISaveQuestionRequest {
+    questionId?: string;
+    quizId: string;
+    content: string;
+    order: number;
+}
+
 const api = createApi({
     reducerPath: 'api',
     baseQuery: axiosBaseQuery({ baseUrl: 'http://localhost:5270/api' }),
@@ -85,8 +111,8 @@ const api = createApi({
             query: ({ courseId, userId }) => ({ url: `/courses/${courseId}?userId=${userId}`, method: 'GET' }),
             providesTags: (result, _) =>
                 result
-                    ? [...result.units.map(u => ({ type: Tag.Unit, id: u.id })), Tag.Course]
-                    : [Tag.Course]
+                    ? [...result.units.map(u => ({ type: Tag.Unit, id: u.id })), Tag.Course, Tag.QuizAttempt]
+                    : [Tag.Course, Tag.QuizAttempt]
         }),
         getLecture: build.query<ILecture, string | void>({
             query: (unitId) => ({ url: `/lectures/${unitId}`, method: 'GET' }),
@@ -98,6 +124,10 @@ const api = createApi({
         }),
         getQuiz: build.query<IQuiz, string | void>({
             query: (unitId) => ({ url: `/quiz/${unitId}`, method: 'GET' }),
+            providesTags: (result, _) =>
+                result
+                    ? [{ type: Tag.Unit, id: result.quizId }, Tag.Unit]
+                    : [Tag.Unit]
         }),
         submitQuiz: build.mutation<ISubmitQuizResponse, ISubmitQuizRequest>({
             query: (request) => ({ url: `/quiz/${request.quizId}/submit`, method: 'POST', data: request }),
@@ -120,6 +150,14 @@ const api = createApi({
         getPermissions: build.query<IGetPermissionResponse, void>({
             query: () => ({ url: '/users/permissions', method: 'GET' }),
         }),
+        saveQuestion: build.mutation<ISaveQuestionResponse, ISaveQuestionRequest>({
+            query: (request) => ({ url: '/quiz/question', method: 'POST', data: request }),
+            invalidatesTags: (result) => [Tag.Unit],
+        }),
+        saveAnswer: build.mutation<ISaveAnswerResponse, ISaveAnswerRequest>({
+            query: (request) => ({ url: `/quiz/question/${request.questionId}/answer`, method: 'POST', data: request }),
+            invalidatesTags: (result) => [Tag.Unit],
+        }),
     })
 });
 
@@ -137,6 +175,8 @@ export const {
     useChangeUserMutation,
     useSaveCourseMutation,
     useSaveLectureMutation,
+    useSaveQuestionMutation,
+    useSaveAnswerMutation
 } = api;
 
 export default api;

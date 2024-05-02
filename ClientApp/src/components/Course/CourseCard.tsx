@@ -10,12 +10,13 @@ import { EditTwoTone } from "@mui/icons-material";
 interface ICourseCardProps {
     course: ICourseShortInfo;
     editable?: boolean;
+    userId?: string;
 }
 
-export function CourseCard({ course, editable }: ICourseCardProps) {
+export function CourseCard({ course, editable, userId }: ICourseCardProps) {
     return (
         <Card>
-            <Link to={`/courses/${course.id}`}>
+            <Link to={`/courses/${course.id}/overview` + (userId ? `?userId=${userId}` : '')}>
                 <CardActionArea>
                     {
                         editable

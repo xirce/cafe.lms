@@ -1,80 +1,52 @@
-import { Button, IconButton, List, ListItem, ListItemText, Paper, TextField } from "@mui/material";
-import { IUnit } from "../types";
-import { Edit } from "@mui/icons-material";
-import { Link } from "react-router-dom";
-import { useSaveLectureMutation } from "../api/apiClient";
-import { useForm } from "react-hook-form";
-
-interface ICreateUnitForm {
-    courseId: string;
-    order: number;
-}
-
-function CreateUnitForm({ courseId, order }: ICreateUnitForm) {
-    const [saveLecture] = useSaveLectureMutation();
-    const { handleSubmit, register, formState, reset } = useForm({ defaultValues: { courseId, title: '', order } });
-
-    const onSubmit = async (data: any) => {
-        console.log(data);
-        await saveLecture({
-            courseId: courseId,
-            title: data.title,
-            content: '',
-            order: data.order,
-        });
-        reset();
-    };
-
-    return <Paper>
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <ListItem
-                itemID='add-new'
-            >
-                <TextField
-                    fullWidth
-                    variant='standard'
-                    size='small'
-                    placeholder='Введите название лекции'
-                    margin='none'
-                    sx={{mr: 2}}
-                    {...register('title')}
-                />
-                <Button disabled={!formState.isDirty || !formState.isValid} type='submit' variant='contained'>
-                    Создать
-                </Button>
-            </ListItem>
-        </form>
-    </Paper>;
-}
+import { IconButton, List, ListItem, ListItemText, Paper } from "@mui/material";
+import { IUnit, UserUnitStatus } from "../types";
+import { CheckCircle, Circle, Edit } from "@mui/icons-material";
+import { Link, NavLink } from "react-router-dom";
+import ListItemButton from "@mui/material/ListItemButton";
 
 interface IUnitsListProps {
     units: IUnit[];
     courseId: string;
+    showProgress?: boolean;
+    editable?: boolean;
 }
 
-export function UnitsList({ units, courseId }: IUnitsListProps) {
+export function UnitsList({ units, courseId, showProgress, editable }: IUnitsListProps) {
     return <List sx={{ width: '100%' }}>
         {
-            units.slice().sort((a, b) => a.order - b.order).map(u =>
-                <Paper sx={{mb: 1}}>
-                    <ListItem
-                        secondaryAction={
-                            <Link to={`/courses/${courseId}/unit/${u.id}/edit`}>
-                                <IconButton
-                                    disableTouchRipple
-                                    edge="end"
-                                >
-                                    <Edit />
-                                </IconButton>
-                            </Link>
-                        }
-                        itemID={u.id}>
+            units.slice().sort((a, b) => a.order - b.order).map(u => {
+                const listItem = <ListItem disablePadding
+                                           secondaryAction={
+                                               <>
+                                                   {
+                                                       showProgress ? u.progress?.status === UserUnitStatus.Done
+                                                           ? <CheckCircle color='success' fontSize={'small'} />
+                                                           : <Circle color='disabled' fontSize={'small'} /> : null
+                                                   }
+                                                   {
+                                                       editable ? <Link to={`/courses/${courseId}/unit/${u.id}/edit`}>
+                                                           <IconButton
+                                                               disableTouchRipple
+                                                               edge="end"
+                                                           >
+                                                               <Edit />
+                                                           </IconButton>
+                                                       </Link> : null
+                                                   }
+                                               </>}
+                                           itemID={u.id}>
+                    <ListItemButton>
                         <ListItemText>
                             {u.title}
                         </ListItemText>
-                    </ListItem>
-                </Paper>)
+                    </ListItemButton>
+                </ListItem>
+                return <Paper sx={{ mb: 1, }}>
+                    {
+                        editable ? listItem : <NavLink to={`/courses/${courseId}/unit/${u.id}`}>{listItem}</NavLink>
+                    }
+                </Paper>
+            })
         }
-        {<CreateUnitForm order={units.length + 1} courseId={courseId} />}
     </List>
 }

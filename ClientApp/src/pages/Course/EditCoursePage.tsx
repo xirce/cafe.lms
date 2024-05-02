@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import { useGetCourseQuery, useGetPositionsQuery } from "../../api/apiClient";
 import { SaveCourseForm } from "../../components/Course/SaveCourseForm";
 import { UnitsList } from "../../components/UnitsList";
+import { CreateUnitForm } from "./CreateUnitForm";
 
 export function EditCoursePage() {
     const { data: positions } = useGetPositionsQuery();
@@ -26,7 +27,8 @@ export function EditCoursePage() {
             course
                 ? <Box borderTop={1} borderColor='divider' pt={5}>
                     <Typography variant='h5' mb={2}>Содержание</Typography>
-                    <UnitsList courseId={course.id} units={course.units} />
+                    <UnitsList showProgress={false} editable courseId={course.id} units={course.units} />
+                    {<CreateUnitForm order={course.units.length + 1} courseId={course.id} />}
                 </Box>
                 : null
         }

@@ -50,6 +50,6 @@ export function UserCoursesPage() {
                     : null
             }
         </Stack>
-        <CoursesList courses={data.courses} />
+        <CoursesList courses={data.courses} userId={userId} />
     </>
 }
